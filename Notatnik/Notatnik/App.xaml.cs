@@ -9,6 +9,10 @@ namespace Notatnik
     /// </summary>
     public partial class App : Application
     {
+        class Element
+        {
+
+        }
     }
 
 }
