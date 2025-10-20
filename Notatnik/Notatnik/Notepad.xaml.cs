@@ -1,5 +1,8 @@
 ﻿using Microsoft.Win32;
+using Notatnik.Elements;
+using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Notatnik
 {
     public partial class Notepad : Window
     {
         //As when I am writing this UI is not implemented this var acts like text in TextBox (for OpenFile and SaveFile purposes)!
-        public string wroteText = "";
+        public string wroteText = "# Test of Header\nThis is paragraph\nand it still continues\n_________________";
 
         public List<Element> content = [];
         public User user = new();
@@ -24,16 +27,50 @@ namespace Notatnik
         public Notepad()
         {
             InitializeComponent();
+            FormatText();
+            MessageBox.Show(ParseIntoString());
         }
 
+        //Format text from string form into list of element
         public void FormatText()
         {
-            throw new NotImplementedException();
+            string[] wroteTextByLine = wroteText.Split('\n');
+            for (int i = 0; i < wroteTextByLine.Length; i++)
+            {
+                string currentLine = wroteTextByLine[i];
+                //If is header:
+                if (currentLine.Length > 0 && currentLine[0] == '#')
+                {
+                    int headerType = currentLine.Length - currentLine.TrimStart('#').Length;
+                    string text = currentLine.TrimStart('#').TrimStart();
+                    content.Add(new Header(text, headerType));
+                    continue;
+                }
+
+                if (Regex.IsMatch(currentLine, @"^(?:\*{3,}|-{3,}|_{3,})$"))
+                {
+                    content.Add(new Rule());
+                    continue;
+                }
+
+                //Else is textblock
+                if (content.Count > 1 && content[^1] is Elements.TextBlock textBlock && currentLine != "")
+                    textBlock.text += "\n" + currentLine;
+                else
+                {
+                    content.Add(new Elements.TextBlock(currentLine));
+                }
+            }
         }
 
         public string ParseIntoString()
         {
-            throw new NotImplementedException();
+            string text = "";
+            for (int i = 0; i < content.Count; i++)
+            {
+                text += content[i].ParseToString();
+            }
+            return text;
         }
 
         public void OpenFile()
