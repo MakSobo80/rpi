@@ -1,0 +1,65 @@
+﻿<Window x:Class="Notatnik.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notatnik"
+        mc:Ignorable="d"
+        Title="Notatnik" Height="500px" Width="800px" MinHeight="500px" MinWidth="800px">
+    <Grid>
+        <TextBox HorizontalAlignment="Left" Margin="252,57,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="513" Height="389"/>
+        <Button Content="OpenFile" HorizontalAlignment="Left" Margin="44,47,0,0"  VerticalAlignment="Top" Width="50px"/>
+        <Button Content="SaveFile" HorizontalAlignment="Left" Margin="118,47,0,0" VerticalAlignment="Top" Width="50px"/>
+        <Button Content="SendFile" HorizontalAlignment="Left" Margin="118,87,0,0" VerticalAlignment="Top" Width="50px"/>
+        <Button Content="GetFile"  HorizontalAlignment="Left" Margin="44,87,0,0"  VerticalAlignment="Top"  Width="50px"/>
+
+        <ComboBox HorizontalAlignment="Left" Margin="44,125,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="Header"></ComboBoxItem>
+            <ComboBoxItem Content="Rule"></ComboBoxItem>
+            <ComboBoxItem Content="CodeBlock"></ComboBoxItem>
+            <ComboBoxItem Content="Image"></ComboBoxItem>
+            <ComboBoxItem Content="Table"></ComboBoxItem>
+            <ComboBoxItem Content="Tasklist"></ComboBoxItem>
+            <ComboBoxItem Content="TextBlock"></ComboBoxItem>
+            <ComboBoxItem Content="ListItem"></ComboBoxItem>
+            <ComboBoxItem Content="List"></ComboBoxItem>
+            <ComboBoxItem Content="Emoji"></ComboBoxItem>
+        </ComboBox>
+        <Frame Visibility="Hidden" x:Name="frametabela" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="0,0,0,0">
+                    <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Wpisz liczbe kolumn" VerticalAlignment="Top" Width="123" Height="40" Margin="24,28,0,0"/>
+                    <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Wpisz liczbe wierszy" VerticalAlignment="Top" Width="123" Height="40" Margin="24,20,0,0"/>
+                </StackPanel>
+            </Frame.Content>
+        </Frame>
+        <Frame Visibility="Hidden" x:Name="frameheader" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <ComboBox HorizontalAlignment="Left" Margin="24,20,0,0" VerticalAlignment="Top" Width="120">
+                    <ComboBoxItem Content="Header 1"></ComboBoxItem>
+                    <ComboBoxItem Content="Header 2"></ComboBoxItem>
+                    <ComboBoxItem Content="Header 3"></ComboBoxItem>
+                    <ComboBoxItem Content="Header 4"></ComboBoxItem>
+                    <ComboBoxItem Content="Header 5"></ComboBoxItem>
+                    <ComboBoxItem Content="Header 6"></ComboBoxItem>
+                </ComboBox>
+            </Frame.Content>
+        </Frame>
+        <Frame Visibility="Hidden" x:Name="framerule" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+        </Frame>
+        <Frame Visibility="Visible" x:Name="framecodeblock" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <ComboBox HorizontalAlignment="Left" Margin="24,20,0,0" VerticalAlignment="Top" Width="120">
+                    <ComboBoxItem Content="Python"></ComboBoxItem>
+                    <ComboBoxItem Content="C#"></ComboBoxItem>
+                    <ComboBoxItem Content="Java"></ComboBoxItem>
+                    <ComboBoxItem Content="HTML"></ComboBoxItem>
+                    <ComboBoxItem Content="CSS"></ComboBoxItem>
+                    <ComboBoxItem Content="JavaScript"></ComboBoxItem>
+                </ComboBox>
+            </Frame.Content>
+        </Frame>
+        <Button Content="Utworz element"  HorizontalAlignment="Left" Margin="44,350,0,0"  VerticalAlignment="Top"  Width="124" Height="36"/>
+
+    </Grid>
+</Window>
