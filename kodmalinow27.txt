@@ -1,0 +1,243 @@
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Notatnik
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+    
+    private void selectheader(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Visible;
+            framerule.Visibility = Visibility.Hidden;
+            framecodeblock.Visibility = Visibility.Hidden;
+            frameimage.Visibility = Visibility.Hidden;
+            frametable.Visibility = Visibility.Hidden;
+            frametasklist.Visibility = Visibility.Hidden;
+            frametextblock.Visibility = Visibility.Hidden;
+            framelistitem.Visibility = Visibility.Hidden;
+            framelist.Visibility = Visibility.Hidden;
+
+        }
+        private void selectrule(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Hidden;
+            framerule.Visibility = Visibility.Visible;
+            framecodeblock.Visibility = Visibility.Hidden;
+            frameimage.Visibility = Visibility.Hidden;
+            frametable.Visibility = Visibility.Hidden;
+            frametasklist.Visibility = Visibility.Hidden;
+            frametextblock.Visibility = Visibility.Hidden;
+            framelistitem.Visibility = Visibility.Hidden;
+            framelist.Visibility = Visibility.Hidden;
+        }
+        private void selectcodeblock(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Hidden;
+            framerule.Visibility = Visibility.Hidden;
+            framecodeblock.Visibility = Visibility.Visible;
+            frameimage.Visibility = Visibility.Hidden;
+            frametable.Visibility = Visibility.Hidden;
+            frametasklist.Visibility = Visibility.Hidden;
+            frametextblock.Visibility = Visibility.Hidden;
+            framelistitem.Visibility = Visibility.Hidden;
+            framelist.Visibility = Visibility.Hidden;
+        }
+        private void selectimage(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Hidden;
+            framerule.Visibility = Visibility.Hidden;
+            framecodeblock.Visibility = Visibility.Hidden;
+            frameimage.Visibility = Visibility.Visible;
+            frametable.Visibility = Visibility.Hidden;
+            frametasklist.Visibility = Visibility.Hidden;
+            frametextblock.Visibility = Visibility.Hidden;
+            framelistitem.Visibility = Visibility.Hidden;
+            framelist.Visibility = Visibility.Hidden;
+        }
+        private void selecttable(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Hidden;
+            framerule.Visibility = Visibility.Hidden;
+            framecodeblock.Visibility = Visibility.Hidden;
+            frameimage.Visibility = Visibility.Hidden;
+            frametable.Visibility = Visibility.Visible;
+            frametasklist.Visibility = Visibility.Hidden;
+            frametextblock.Visibility = Visibility.Hidden;
+            framelistitem.Visibility = Visibility.Hidden;
+            framelist.Visibility = Visibility.Hidden;
+        }
+        private void selecttasklist(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Hidden;
+            framerule.Visibility = Visibility.Hidden;
+            framecodeblock.Visibility = Visibility.Hidden;
+            frameimage.Visibility = Visibility.Hidden;
+            frametable.Visibility = Visibility.Hidden;
+            frametasklist.Visibility = Visibility.Visible;
+            frametextblock.Visibility = Visibility.Hidden;
+            framelistitem.Visibility = Visibility.Hidden;
+            framelist.Visibility = Visibility.Hidden;
+        }
+        private void selectTextBlock(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Hidden;
+            framerule.Visibility = Visibility.Hidden;
+            framecodeblock.Visibility = Visibility.Hidden;
+            frameimage.Visibility = Visibility.Hidden;
+            frametable.Visibility = Visibility.Hidden;
+            frametasklist.Visibility = Visibility.Hidden;
+            frametextblock.Visibility = Visibility.Visible;
+            framelistitem.Visibility = Visibility.Hidden;
+            framelist.Visibility = Visibility.Hidden;
+        }
+        private void selectListItem(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Hidden;
+            framerule.Visibility = Visibility.Hidden;
+            framecodeblock.Visibility = Visibility.Hidden;
+            frameimage.Visibility = Visibility.Hidden;
+            frametable.Visibility = Visibility.Hidden;
+            frametasklist.Visibility = Visibility.Hidden;
+            frametextblock.Visibility = Visibility.Hidden;
+            framelistitem.Visibility = Visibility.Visible;
+            framelist.Visibility = Visibility.Hidden;
+        }
+        private void selectlist(object sender, RoutedEventArgs e)
+        {
+            frameheader.Visibility = Visibility.Hidden;
+            framerule.Visibility = Visibility.Hidden;
+            framecodeblock.Visibility = Visibility.Hidden;
+            frameimage.Visibility = Visibility.Hidden;
+            frametable.Visibility = Visibility.Hidden;
+            frametasklist.Visibility = Visibility.Hidden;
+            frametextblock.Visibility = Visibility.Hidden;
+            framelistitem.Visibility = Visibility.Hidden;
+            framelist.Visibility = Visibility.Visible;
+        }
+    }
+}
+
+
+<Window x:Class="Notatnik.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notatnik"
+        mc:Ignorable="d"
+        Background="DarkGray"
+        Title="Notatnik" Height="500px" Width="800px" MinHeight="500px" MinWidth="800px">
+
+    <Grid>
+        <StackPanel Margin="200,0,0,0" VerticalAlignment="Center" Width="520" Height="400" Background="#FFC5C3C3">
+            
+        </StackPanel>
+        <Button Content="OpenFile" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Left" Margin="44,47,0,0"  VerticalAlignment="Top" Width="60px"/>
+        <Button Content="SaveFile" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Left" Margin="118,47,0,0" VerticalAlignment="Top" Width="60px"/>
+        <Button Content="SendFile" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Left" Margin="118,87,0,0" VerticalAlignment="Top" Width="60px"/>
+        <Button Content="GetFile"  Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Left" Margin="44,87,0,0"  VerticalAlignment="Top" Width="60px"/>
+
+        <ComboBox BorderBrush="DarkGray" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="44,125,0,0" >
+            <ComboBoxItem Selected="selectheader" x:Name="comboheader" Content="Header"/>
+            <ComboBoxItem Selected="selectrule" x:Name="comborule" Content="Rule"/>
+            <ComboBoxItem Selected="selectcodeblock" x:Name="combocodeblock" Content="CodeBlock"/>
+            <ComboBoxItem Selected="selectimage" x:Name="comboimage" Content="Image"/>
+            <ComboBoxItem Selected="selecttable" x:Name="combotable" Content="Table"/>
+            <ComboBoxItem Selected="selecttasklist" x:Name="combotasklist" Content="Tasklist"/>
+            <ComboBoxItem Selected="selectTextBlock" x:Name="comboTextBlock" Content="TextBlock"/>
+            <ComboBoxItem Selected="selectListItem" x:Name="comboListItem" Content="ListItem"/>
+            <ComboBoxItem Selected="selectlist" x:Name="combo" Content="List"/>
+        </ComboBox>
+
+        <Frame Visibility="hidden" x:Name="frametable" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="0,0,0,0">
+                    <TextBox HorizontalAlignment="Left" Background="#FFE5E5E5" TextWrapping="Wrap" Text="Wpisz liczbe kolumn" VerticalAlignment="Top" Width="123" Height="40" Margin="24,28,0,0"/>
+                    <TextBox HorizontalAlignment="Left" Background="#FFE5E5E5" TextWrapping="Wrap" Text="Wpisz liczbe wierszy" VerticalAlignment="Top" Width="123" Height="40" Margin="24,20,0,0"/>
+                </StackPanel>
+            </Frame.Content>
+        </Frame>
+
+        <Frame Visibility="Hidden" x:Name="frameheader" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <ComboBox SelectedItem="0" HorizontalAlignment="Left" Margin="24,20,0,0" VerticalAlignment="Top" Width="120">
+                    <ComboBoxItem Content="Header 1"/>
+                    <ComboBoxItem Content="Header 2"/>
+                    <ComboBoxItem Content="Header 3"/>
+                    <ComboBoxItem Content="Header 4"/>
+                    <ComboBoxItem Content="Header 5"/>
+                    <ComboBoxItem Content="Header 6"/>
+                </ComboBox>
+            </Frame.Content>
+        </Frame>
+
+        <Frame Visibility="Hidden" x:Name="framerule" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+        </Frame>
+
+        <Frame Visibility="Hidden" x:Name="framecodeblock" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <ComboBox SelectedIndex="0" BorderBrush="DarkGray" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="24,20,0,0">
+                    <ComboBoxItem Content="Python"/>
+                    <ComboBoxItem Content="C#"/>
+                    <ComboBoxItem Content="Java"/>
+                    <ComboBoxItem Content="HTML"/>
+                    <ComboBoxItem Content="CSS"/>
+                    <ComboBoxItem Content="JavaScript"/>
+                </ComboBox>
+            </Frame.Content>
+        </Frame>
+
+        <Frame Visibility="Hidden" x:Name="frameimage" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <Button Content="Open file" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Left" Margin="24,20,0,0"  VerticalAlignment="Center" Width="124" Height="50"/>
+            </Frame.Content>
+        </Frame>
+
+        <Frame Visibility="Hidden" x:Name="frametasklist" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Wpisz ilosc taskow do zrobienia" VerticalAlignment="Top" Width="123" Height="40" Margin="24,20,0,0"/>
+            </Frame.Content>
+        </Frame>
+
+        <Frame Visibility="Hidden" x:Name="frametextblock" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <StackPanel Width="200px" Height="150px" Margin="0,0,0,0" VerticalAlignment="Center">
+                    <Button Content="Bold" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Left" Margin="60,20,0,0" VerticalAlignment="Top" Width="60px"/>
+                    <Button Content="Italic" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Left" Margin="60,5,0,0" VerticalAlignment="Top" Width="60px"/>
+
+                </StackPanel>
+            </Frame.Content>
+        </Frame>
+
+        <Frame Visibility="Hidden" x:Name="framelistitem" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Wpisz dlugosc itemlisty" VerticalAlignment="Top" Width="123" Height="40" Margin="24,20,0,0"/>
+            </Frame.Content>
+        </Frame>
+
+        <Frame Visibility="Hidden" x:Name="framelist" HorizontalAlignment="Left" VerticalAlignment="top" Width="200px" Height="150px" Margin="20,178,578,72">
+            <Frame.Content>
+                <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Wpisz dlugosc listy" VerticalAlignment="Top" Width="123" Height="40" Margin="24,20,0,0"/>
+            </Frame.Content>
+        </Frame>
+
+        <Button Content="Utworz element" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Left" Margin="44,350,0,0"  VerticalAlignment="Top"  Width="124" Height="50"/>
+    </Grid>
+</Window>
