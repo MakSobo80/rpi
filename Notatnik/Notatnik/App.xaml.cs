@@ -1,18 +1,29 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Notatnik
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
-        class Element
+        protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
 
+            Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            var loginWindow = new LoginWindow();
+            bool? loginResult = loginWindow.ShowDialog();
+
+            if (loginResult == true)
+            {
+                var mainWindow = new MainWindow();
+                this.MainWindow = mainWindow;
+                mainWindow.Show();
+            }
+            else
+            {
+                Shutdown();
+            }
         }
-    }
 
+    }
 }
