@@ -16,12 +16,12 @@ namespace Notatnik
             if (loginResult == true)
             {
                 var mainWindow = new MainWindow();
-                this.MainWindow = mainWindow;
+                Application.Current.MainWindow = mainWindow;
                 mainWindow.Show();
             }
             else
             {
-                Shutdown();
+                Application.Current.Shutdown();
             }
         }
 
