@@ -16,8 +16,8 @@ namespace Notatnik
     public partial class LoginWindow : Window
     {
         static readonly HttpClient http = new HttpClient();
-        private const string ClientId = "Ov23lixBJaaA5LSXOjY2"; // Wstaw swój Client ID
-        private const string ClientSecret = "84b829953644741c72cec3f2a9554de2d8ff59a2"; // Wstaw swój Client Secret
+        private const string ClientId = "Ov23lixBJaaA5LSXOjY2";
+        private const string ClientSecret = "84b829953644741c72cec3f2a9554de2d8ff59a2";
         private const string GitHubAuthorizeUrl = "https://github.com/login/oauth/authorize";
         private const string GitHubTokenUrl = "https://github.com/login/oauth/access_token";
         private const string GitHubUserApiUrl = "https://api.github.com/user";
@@ -28,6 +28,12 @@ namespace Notatnik
         }
 
         private async void GitHubLogin_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = await LoginInWithGithub();
+            this.Close();
+        }
+
+        public async Task<bool> LoginInWithGithub()
         {
             var scope = "read:user";
 
@@ -43,7 +49,7 @@ namespace Notatnik
                 $"&state={Uri.EscapeDataString(state)}";
 
             using var listener = new HttpListener();
-            listener.Prefixes.Add($"http://127.0.0.1:{port}/callback/");
+            listener.Prefixes.Add($"{redirectUri}/");
             listener.Start();
 
             Process.Start(new ProcessStartInfo { FileName = authorizeUrl, UseShellExecute = true });
@@ -73,11 +79,11 @@ namespace Notatnik
             var body = await resp.Content.ReadAsStringAsync();
             var token = JsonSerializer.Deserialize<Token>(body)!;
 
-            var meReq = new HttpRequestMessage(HttpMethod.Get, GitHubUserApiUrl);
-            meReq.Headers.UserAgent.ParseAdd("GithubAuthCodeFlowDemo/1.0");
-            meReq.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+            var userReq = new HttpRequestMessage(HttpMethod.Get, GitHubUserApiUrl);
+            userReq.Headers.UserAgent.ParseAdd("GithubAuthCodeFlowDemo/1.0");
+            userReq.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-            var meResp = await http.SendAsync(meReq);
+            var meResp = await http.SendAsync(userReq);
             meResp.EnsureSuccessStatusCode();
 
             var responseContent = await meResp.Content.ReadAsStringAsync();
@@ -85,8 +91,7 @@ namespace Notatnik
             SessionData.CurrentUser = user;
             SaveUserSession(user!, token.AccessToken!);
 
-            this.DialogResult = true;
-            this.Close();
+            return true;
         }
 
         private void ContinueWithoutLogin_Click(object sender, RoutedEventArgs e)
@@ -103,23 +108,19 @@ namespace Notatnik
                 "Notatnik",
                 "session.json");
 
-            // Create the directory if it doesn't exist
             System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath)!);
 
-            // Create the session data object
             var sessionData = new SessionFile
             {
                 User = user,
                 AccessToken = accessToken
             };
 
-            // Serialize the session data to JSON
             string json = JsonSerializer.Serialize(sessionData, new JsonSerializerOptions
             {
-                WriteIndented = true // Optional: Makes the JSON more readable
+                WriteIndented = true
             });
 
-            // Write the JSON to the file
             System.IO.File.WriteAllText(filePath, json);
         }
 

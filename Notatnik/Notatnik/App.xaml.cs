@@ -11,30 +11,28 @@ namespace Notatnik
 
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-            // Sprawdź, czy istnieje zapisany użytkownik w sesji
             var user = LoadUserSession();
             if (user != null)
             {
-                // Jeśli użytkownik jest zalogowany, otwórz MainWindow
                 var mainWindow = new MainWindow();
                 Application.Current.MainWindow = mainWindow;
                 mainWindow.Show();
             }
             else
             {
-                // Jeśli użytkownik nie jest zalogowany, otwórz LoginWindow
                 var loginWindow = new LoginWindow();
                 if (loginWindow.ShowDialog() == true)
                 {
-                    // Po zalogowaniu otwórz MainWindow
                     var mainWindow = new MainWindow();
                     Application.Current.MainWindow = mainWindow;
-                    MessageBox.Show("Zalogowano jako: " + SessionData.CurrentUser?.Login);
+                    if(SessionData.CurrentUser != null)
+                        MessageBox.Show("Zalogowano jako: " + SessionData.CurrentUser?.Login);
+                    else
+                        MessageBox.Show("Kontynuowano bez logowania");
                     mainWindow.Show();
                 }
                 else
                 {
-                    // Jeśli użytkownik zamknie LoginWindow bez logowania, zamknij aplikację
                     Application.Current.Shutdown();
                 }
             }
@@ -63,9 +61,6 @@ namespace Notatnik
 
             return null;
         }
-
-
-
     }
     public class SessionFile
     {
