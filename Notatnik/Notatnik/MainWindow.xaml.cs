@@ -20,7 +20,6 @@ namespace Notatnik
         {
             InitializeComponent();
             var user = SessionData.CurrentUser;
-            MessageBox.Show(user != null ? $"Zalogowano jako: {user?.Login}" : "Nie zalogowano");
             if (user != null)
             {
                 loggedInAs.Content = $"Zalogowano jako: {user?.Login}";

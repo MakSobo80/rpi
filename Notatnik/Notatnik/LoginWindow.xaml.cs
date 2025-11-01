@@ -83,6 +83,7 @@ namespace Notatnik
             var responseContent = await meResp.Content.ReadAsStringAsync();
             var user = JsonSerializer.Deserialize<GitHubUser>(responseContent);
             SessionData.CurrentUser = user;
+            SaveUserSession(user!, token.AccessToken!);
 
             this.DialogResult = true;
             this.Close();
@@ -94,6 +95,34 @@ namespace Notatnik
             this.DialogResult = true;
             this.Close();
         }
+
+        private void SaveUserSession(GitHubUser user, string accessToken)
+        {
+            string filePath = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Notatnik",
+                "session.json");
+
+            // Create the directory if it doesn't exist
+            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath)!);
+
+            // Create the session data object
+            var sessionData = new SessionFile
+            {
+                User = user,
+                AccessToken = accessToken
+            };
+
+            // Serialize the session data to JSON
+            string json = JsonSerializer.Serialize(sessionData, new JsonSerializerOptions
+            {
+                WriteIndented = true // Optional: Makes the JSON more readable
+            });
+
+            // Write the JSON to the file
+            System.IO.File.WriteAllText(filePath, json);
+        }
+
     }
 
     public sealed class Token
