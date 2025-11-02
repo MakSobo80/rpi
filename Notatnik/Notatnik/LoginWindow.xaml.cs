@@ -15,7 +15,7 @@ namespace Notatnik
 {
     public partial class LoginWindow : Window
     {
-        static readonly HttpClient http = new HttpClient();
+        static readonly HttpClient http = new();
         private const string ClientId = "Ov23lixBJaaA5LSXOjY2";
         private const string ClientSecret = "84b829953644741c72cec3f2a9554de2d8ff59a2";
         private const string GitHubAuthorizeUrl = "https://github.com/login/oauth/authorize";
@@ -29,11 +29,11 @@ namespace Notatnik
 
         private async void GitHubLogin_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = await LoginInWithGithub();
+            this.DialogResult = await LoginWithGithub();
             this.Close();
         }
 
-        public async Task<bool> LoginInWithGithub()
+        public async Task<bool> LoginWithGithub()
         {
             var scope = "read:user";
 
@@ -61,7 +61,7 @@ namespace Notatnik
 
             var responseBytes = Encoding.UTF8.GetBytes("You may now close this window.");
             ctx.Response.ContentLength64 = responseBytes.Length;
-            await ctx.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length);
+            await ctx.Response.OutputStream.WriteAsync(responseBytes);
             ctx.Response.Close();
             listener.Stop();
 
@@ -135,9 +135,9 @@ namespace Notatnik
 
     public class GitHubUser
     {
-        [JsonPropertyName("login")] public string Login { get; set; }
-        [JsonPropertyName("name")] public string Name { get; set; }
-        [JsonPropertyName("avatar_url")] public string AvatarUrl { get; set; }
+        [JsonPropertyName("login")] public string? Login { get; set; }
+        [JsonPropertyName("name")] public string? Name { get; set; }
+        [JsonPropertyName("avatar_url")] public string? AvatarUrl { get; set; }
     }
 
     public static class SessionData

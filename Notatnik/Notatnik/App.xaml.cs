@@ -47,6 +47,8 @@ namespace Notatnik
                 "Notatnik",
                 "session.json");
 
+            MessageBox.Show(filePath);
+
             if (!System.IO.File.Exists(filePath))
                 return null;
 
