@@ -19,11 +19,24 @@ namespace Notatnik
         public MainWindow()
         {
             InitializeComponent();
+            var user = SessionData.CurrentUser;
+            if (user != null)
+            {
+                loggedInAs.Content = $"Zalogowano jako: {user?.Login}";
+            } else
+            {
+                loggedInAs.Content = "Nie zalogowano";
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

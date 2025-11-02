@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notatnik"
         mc:Ignorable="d"
-        Title="Notatnik" Height="500px" Width="800px" MinHeight="500px" MinWidth="800px">
+        Title="Notatnik" Height="500px" Width="800px" MinHeight="500px" MinWidth="800px" Closed="Window_Closed">
     <Grid>
         <TextBox HorizontalAlignment="Left" Margin="252,57,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="513" Height="389"/>
         <Button Content="OpenFile" HorizontalAlignment="Left" Margin="44,47,0,0"  VerticalAlignment="Top" Width="50px"/>
@@ -60,6 +60,6 @@
             </Frame.Content>
         </Frame>
         <Button Content="Utworz element"  HorizontalAlignment="Left" Margin="44,350,0,0"  VerticalAlignment="Top"  Width="124" Height="36"/>
-
+        <Label x:Name="loggedInAs" Content="Label" HorizontalAlignment="Left" Margin="10,253,0,0" VerticalAlignment="Top" Width="237" HorizontalContentAlignment="Center"/>
     </Grid>
 </Window>
