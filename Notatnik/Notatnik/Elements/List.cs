@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Notatnik.Elements
 {
-    public class List : Element
+    public class List(bool isOrdered) : Element
     {
         public List<ListItem> content = [];
+        public bool isOrdered = isOrdered;
 
         public void AddListElement(List<Element> elementsToAdd)
         {
@@ -23,9 +24,19 @@ namespace Notatnik.Elements
         public override string ParseToString()
         {
             string text = "";
-            for (int i = 0; i < content.Count; i++)
+            if (!isOrdered)
             {
-                text += $"- {content[i].ParseToString()}\n";
+                for (int i = 0; i < content.Count; i++)
+                {
+                    text += $"- {content[i].ParseToString()}\n";
+                }
+            }
+            else
+            {
+                for (int i = 0; i < content.Count; i++)
+                {
+                    text += $"{i+1}. {content[i].ParseToString()}\n";
+                }
             }
             return $"{text}";
         }

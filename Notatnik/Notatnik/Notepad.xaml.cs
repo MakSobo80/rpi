@@ -18,8 +18,8 @@ namespace Notatnik
 {
     public partial class Notepad : Window
     {
-        //As when I am writing this UI is not implemented this var acts like text in TextBox (for OpenFile and SaveFile purposes)!
-        public string wroteText = "# Test of Header\nThis is *paragraph*\nand it still __continues__\n_________________\n* to jest pierwszy element list\n* to jest drugi element list";
+        //As when I am writing this UI is not implemented, so this var acts like text in TextBox (for OpenFile and SaveFile purposes)!
+        public string wroteText = "# Test of Header\nTest of *paragraph*\nwhich has __two__ lines\n_________________\n1. This is first element of list\n8. that's a __second__ element\n- and this is unordered list\n- which has two elements";
 
         public List<Element> content = [];
         public User user = new();
@@ -27,7 +27,6 @@ namespace Notatnik
         public Notepad()
         {
             InitializeComponent();
-            FormatText();
             MessageBox.Show(ParseIntoString());
         }
 
@@ -57,13 +56,13 @@ namespace Notatnik
                 if(Regex.IsMatch(currentLine, @"^[-\*\+]\s"))
                 {
                     Elements.List list;
-                    if(content.Count > 0 && content[^1] is Elements.List existingList)
+                    if(content.Count > 0 && content[^1] is Elements.List existingList && !existingList.isOrdered)
                     {
                         list = existingList;
                     }
                     else
                     {
-                        list = new Elements.List();
+                        list = new Elements.List(false);
                         content.Add(list);
                     }
                     string listItemContent = currentLine.Substring(2); // Remove the list marker and space
@@ -71,24 +70,28 @@ namespace Notatnik
                     continue;
                 }
 
-                //code to modify if is ordered list
+                //if is ordered list
 
-                /*if (Regex.IsMatch(currentLine, @"^\d+\.\s"))
+                if (Regex.IsMatch(currentLine, @"^\d+\.\s"))
                 {
-                    Elements.List list;
-                    if (content.Count > 0 && content[^1] is Elements.List existingList)
+                    Elements.List? list = null;
+                    if (content.Count > 0 && content[^1] is Elements.List existingList && existingList.isOrdered)
                     {
                         list = existingList;
                     }
-                    else
+                    else if(Regex.IsMatch(currentLine, @"^1\.\s"))
                     {
-                        list = new Elements.List();
+                        list = new Elements.List(true);
                         content.Add(list);
                     }
-                    string listItemContent = currentLine.Substring(2); // Remove the list marker and space
-                    list.AddListElement(SplitStringByStyles(listItemContent));
-                    continue;
-                }*/
+
+                    if (list != null)
+                    {
+                        string listItemContent = currentLine.Substring(2);
+                        list.AddListElement(SplitStringByStyles(listItemContent));
+                        continue;
+                    }
+                }
 
                 //Else is paragraph
                 if (content.Count > 1 && content[^1] is Elements.Paragraph paragraph && currentLine != "")
@@ -172,9 +175,9 @@ namespace Notatnik
             {
                 string filePath = openFileDialog.FileName;
                 string fileContent = File.ReadAllText(filePath);
-                //TODO: CHANGE fileContent INTO LIST OF ELEMENTS AND SAVE IT AS SUCH
                 wroteText = fileContent;
-                MessageBox.Show($"{content}");
+                FormatText();
+                MessageBox.Show($"Opened text: {ParseIntoString()}");
             }
         }
 
@@ -188,7 +191,7 @@ namespace Notatnik
             if (saveFileDialog.ShowDialog() == true) { 
                 string filePath = saveFileDialog.FileName;
                 //TODO: Convert content into string using function
-                string fileContent = wroteText;
+                string fileContent = ParseIntoString();
 
                 File.WriteAllText(filePath, fileContent);
                 MessageBox.Show($"Saved file in: {filePath}");
