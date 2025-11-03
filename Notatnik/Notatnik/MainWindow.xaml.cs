@@ -19,7 +19,7 @@ namespace Notatnik
         public MainWindow()
         {
             InitializeComponent();
-            var user = SessionData.CurrentUser;
+            var user = Session.LoggedInUser;
             if (user != null)
             {
                 loggedInAs.Content = $"Zalogowano jako: {user?.Login}";
