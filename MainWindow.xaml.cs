@@ -131,5 +131,7 @@ namespace Notatnik
             framelistitem.Visibility = Visibility.Hidden;
             framelist.Visibility = Visibility.Visible;
         }
+
+
     }
 }
