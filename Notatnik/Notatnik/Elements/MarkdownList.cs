@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Notatnik.Elements
 {
-    public class List(bool isOrdered) : Element
+    public class MarkdownList(bool isOrdered) : Element
     {
         public List<ListItem> content = [];
         public bool isOrdered = isOrdered;

@@ -16,27 +16,22 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Notatnik
 {
-    public partial class Notepad : Window
+    public partial class Notepad
     {
         //As when I am writing this UI is not implemented, so this var acts like text in TextBox (for OpenFile and SaveFile purposes)!
-        public string wroteText = "# Test of Header\nTest of *paragraph*\nwhich has __two__ lines\n_________________\n1. This is first element of list\n8. that's a __second__ element\n- and this is unordered list\n- which has two elements";
+        public string writtenText = "# Test of Header\nTest of *paragraph*\nwhich has __two__ lines\n_________________\n1. This is first element of list\n8. that's a __second__ element\n- and this is unordered list\n- which has two elements";
 
         public List<Element> content = [];
-        public User user = new();
+        public GitHubUser user = new();
 
-        public Notepad()
-        {
-            InitializeComponent();
-            MessageBox.Show(ParseIntoString());
-        }
 
         //Format text from string form into list of elements
         public void FormatText()
         {
-            string[] wroteTextByLine = wroteText.Split('\n');
-            for (int i = 0; i < wroteTextByLine.Length; i++)
+            string[] writtenTextByLine = writtenText.Split('\n');
+            for (int i = 0; i < writtenTextByLine.Length; i++)
             {
-                string currentLine = wroteTextByLine[i];
+                string currentLine = writtenTextByLine[i];
                 //If is header:
                 if (currentLine.Length > 0 && currentLine[0] == '#')
                 {
@@ -46,55 +41,55 @@ namespace Notatnik
                     continue;
                 }
 
-                if (Regex.IsMatch(currentLine, @"^(?:\*{3,}|-{3,}|_{3,})$"))
+                if (RuleRegex().IsMatch(currentLine))
                 {
                     content.Add(new Rule());
                     continue;
                 }
 
                 //If is unordered list
-                if(Regex.IsMatch(currentLine, @"^[-\*\+]\s"))
+                if(UnorderedListRegex().IsMatch(currentLine))
                 {
-                    Elements.List list;
-                    if(content.Count > 0 && content[^1] is Elements.List existingList && !existingList.isOrdered)
+                    Elements.MarkdownList list;
+                    if(content.Count > 0 && content[^1] is Elements.MarkdownList existingList && !existingList.isOrdered)
                     {
                         list = existingList;
                     }
                     else
                     {
-                        list = new Elements.List(false);
+                        list = new Elements.MarkdownList(false);
                         content.Add(list);
                     }
-                    string listItemContent = currentLine.Substring(2); // Remove the list marker and space
+                    string listItemContent = currentLine[2..]; // Remove the list marker and space
                     list.AddListElement(SplitStringByStyles(listItemContent));
                     continue;
                 }
 
                 //if is ordered list
 
-                if (Regex.IsMatch(currentLine, @"^\d+\.\s"))
+                if (OrderedListRegex().IsMatch(currentLine))
                 {
-                    Elements.List? list = null;
-                    if (content.Count > 0 && content[^1] is Elements.List existingList && existingList.isOrdered)
+                    Elements.MarkdownList? list = null;
+                    if (content.Count > 0 && content[^1] is Elements.MarkdownList existingList && existingList.isOrdered)
                     {
                         list = existingList;
                     }
-                    else if(Regex.IsMatch(currentLine, @"^1\.\s"))
+                    else if(OrderedListFirstElementRegex().IsMatch(currentLine))
                     {
-                        list = new Elements.List(true);
+                        list = new Elements.MarkdownList(true);
                         content.Add(list);
                     }
 
                     if (list != null)
                     {
-                        string listItemContent = currentLine.Substring(2);
+                        string listItemContent = currentLine[2..];
                         list.AddListElement(SplitStringByStyles(listItemContent));
                         continue;
                     }
                 }
 
                 //Else is paragraph
-                if (content.Count > 1 && content[^1] is Elements.Paragraph paragraph && currentLine != "")
+                if (content.Count > 0 && content[^1] is Elements.Paragraph paragraph && currentLine != "")
                 {
                     paragraph.content.AddRange(SplitStringByStyles(currentLine + "\n"));
                 }
@@ -106,9 +101,9 @@ namespace Notatnik
         }
 
         //Takes string, tries to find bold, italic or italic bold, if finds styles then returns list of elements where every style is different element in list
-        static List<Element> SplitStringByStyles(string input)
+        public static List<Element> SplitStringByStyles(string input)
         {
-            string[] markers = { "***", "___", "*__", "_**", "**", "__", "*", "_"};
+            string[] markers = ["***", "___", "*__", "_**", "**", "__", "*", "_"];
             List<Element> result = [];
 
             foreach (var marker in markers)
@@ -120,11 +115,11 @@ namespace Notatnik
 
                 if (first != -1 && last != -1)
                 {
-                    string before = input.Substring(0, first);
-                    string between = input.Substring(first + marker.Length, last - (first + marker.Length));
+                    string before = input[..first];
+                    string between = input[(first + marker.Length)..last];
                     if(between == "")
                         continue;
-                    string after = input.Substring(last + marker.Length);
+                    string after = input[(last + marker.Length)..];
 
                     if (before != "")
                         result.Add(new Elements.TextBlock(before));
@@ -175,7 +170,7 @@ namespace Notatnik
             {
                 string filePath = openFileDialog.FileName;
                 string fileContent = File.ReadAllText(filePath);
-                wroteText = fileContent;
+                writtenText = fileContent;
                 FormatText();
                 MessageBox.Show($"Opened text: {ParseIntoString()}");
             }
@@ -198,7 +193,7 @@ namespace Notatnik
             }
         }
 
-        public void SendFile(int fileId, User user)
+        public void SendFile(int fileId, GitHubUser user)
         {
             throw new NotImplementedException();
         }
@@ -213,9 +208,9 @@ namespace Notatnik
             throw new NotImplementedException();
         }
 
-        public User Login()
-        {
-            throw new NotImplementedException();
-        }
+        [GeneratedRegex(@"^(?:\*{3,}|-{3,}|_{3,})$")] private static partial Regex RuleRegex();
+        [GeneratedRegex(@"^[-\*\+]\s")] private static partial Regex UnorderedListRegex();
+        [GeneratedRegex(@"^\d+\.\s")] private static partial Regex OrderedListRegex();
+        [GeneratedRegex(@"^1\.\s")] private static partial Regex OrderedListFirstElementRegex();
     }
 }
