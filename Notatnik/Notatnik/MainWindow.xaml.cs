@@ -29,11 +29,6 @@ namespace Notatnik
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Window_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();

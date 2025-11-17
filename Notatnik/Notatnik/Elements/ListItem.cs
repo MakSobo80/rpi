@@ -19,9 +19,10 @@ namespace Notatnik.Elements
             string text = "";
             for (int i = 0; i < content.Count; i++)
             {
+                if (content[i] is not TextBlock)
+                    text += "\n";
                 text += content[i].ParseToString();
-            }
-            ;
+            };
             return $"{text}";
         }
     }
