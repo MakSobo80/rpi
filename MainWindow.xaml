@@ -9,12 +9,13 @@
         Title="Notatnik" Height="500px" Width="800px" MinHeight="400" MinWidth="533">
 
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Background="#FFC5C3C3" />
-        <ComboBox Grid.Column="0" BorderBrush="DarkGray" HorizontalAlignment="center" VerticalAlignment="Bottom" Width="120" Margin="0,0,0,240" >
+        <ComboBox Grid.Column="0" HorizontalAlignment="center" VerticalAlignment="Bottom" Width="120" Margin="0,0,0,240" >
             <ComboBoxItem Selected="selectheader" x:Name="comboheader" Content="Header"/>
             <ComboBoxItem Selected="selectrule" x:Name="comborule" Content="Rule"/>
             <ComboBoxItem Selected="selectcodeblock" x:Name="combocodeblock" Content="CodeBlock"/>
@@ -105,8 +106,6 @@
                 </StackPanel>
             </Frame.Content>
         </Frame>
-
-        <Button Grid.Column="0" Content="Utworz element" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,40"  VerticalAlignment="bottom"  Width="124" Height="50"/>
         <Menu VerticalAlignment="Top" Background="#FFE5E5E5" BorderBrush="DarkGray">
             <MenuItem Grid.Column="0" Header="_Plik">
                 <MenuItem Header="Otwórz plik" x:Name="menuOpenFile" />
@@ -117,5 +116,6 @@
                 <MenuItem Header="Zamknij" x:Name="menuExit" />
             </MenuItem>
         </Menu>
+        <Button Grid.Column="0" Content="Utworz element" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,40"  VerticalAlignment="bottom"  Width="124" Height="50" Click="Button_Click"/>
     </Grid>
 </Window>
