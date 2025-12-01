@@ -170,13 +170,13 @@ namespace Notatnik
                     switch (marker.Length)
                     {
                         case 3:
-                            result.Add(new Elements.TextBlock(between) { style = TextStyle.ItalicBold });
+                            result.Add(new Elements.TextBlock(between) { style = Elements.TextBlock.TextStyle.ItalicBold });
                             break;
                         case 2:
-                            result.Add(new Elements.TextBlock(between) { style = TextStyle.Bold });
+                            result.Add(new Elements.TextBlock(between) { style = Elements.TextBlock.TextStyle.Bold });
                             break;
                         case 1:
-                            result.Add(new Elements.TextBlock(between) { style = TextStyle.Italic });
+                            result.Add(new Elements.TextBlock(between) { style = Elements.TextBlock.TextStyle.Italic });
                             break;
                     }
 

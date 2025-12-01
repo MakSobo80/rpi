@@ -7,19 +7,19 @@ using System.Windows;
 
 namespace Notatnik.Elements
 {
-    public enum TextStyle
+    public class TextBlock(string text) : Element
     {
-        None,
-        Bold,
-        Italic,
-        ItalicBold
-    }
+        public enum TextStyle
+        {
+            None,
+            Bold,
+            Italic,
+            ItalicBold
+        }
 
-    public class TextBlock(string text, TextStyle style = TextStyle.None) : Element
-    {
         //Text block can contain only text
         public string text = text;
-        public TextStyle style = style;
+        public TextStyle style = TextStyle.None;
 
         public override void Display()
         {
