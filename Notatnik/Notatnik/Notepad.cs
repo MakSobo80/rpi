@@ -24,6 +24,7 @@ namespace Notatnik
         public List<Element> content = [];
         public GitHubUser user = new();
 
+
         //Format text from string form into list of elements
         public void FormatText()
         {
