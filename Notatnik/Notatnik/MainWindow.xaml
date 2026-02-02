@@ -113,7 +113,6 @@
             <Frame.Content>
                 <StackPanel>
                     <Label Margin="50,30,0,0" Content="Wpisz dlugosc listy"></Label>
-
                     <TextBox HorizontalAlignment="center" TextWrapping="Wrap" VerticalAlignment="Top" Width="123" Height="40" Margin="0,20,0,0"/>
                     <CheckBox HorizontalAlignment="center" Content="Numeryczna" Height="15" Margin="0,20,0,0" Width="120"/>
                 </StackPanel>
