@@ -31,20 +31,20 @@
             <Frame.Content>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Width="100" VerticalAlignment="Center">
-                        <Label Margin="10,20,0,0" Content="Liczba kolumn"></Label>
-                        <Label Margin="10,20,0,0" Content="Liczba wierszy"></Label>
+                        <Label Margin="10,10,0,0" Content="Liczba kolumn"></Label>
+                        <Label Margin="10,15,0,0" Content="Liczba wierszy"></Label>
                     </StackPanel>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBox HorizontalAlignment="center" Background="#FFE5E5E5" TextWrapping="Wrap" VerticalAlignment="Top" Width="123" Height="40" Margin="0,20,0,0"/>
-                        <TextBox HorizontalAlignment="center" Background="#FFE5E5E5" TextWrapping="Wrap" VerticalAlignment="Top" Width="123" Height="40" Margin="0,20,0,0"/>
+                        <TextBox HorizontalAlignment="center" Background="#FFE5E5E5" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="20" Margin="0,0,0,0"/>
+                        <TextBox HorizontalAlignment="center" Background="#FFE5E5E5" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="20" Margin="0,20,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </Frame.Content>
         </Frame>
 
-        <Frame Grid.Column="0" Visibility="hidden" x:Name="frameheader" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0">
+        <Frame Grid.Column="0" Visibility="Hidden" x:Name="frameheader" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0">
             <Frame.Content>
-                <ComboBox SelectedItem="0" HorizontalAlignment="center" Margin="0,20,0,0" VerticalAlignment="Top" Width="120">
+                <ComboBox SelectedItem="0" HorizontalAlignment="center" Margin="0,40,0,0" VerticalAlignment="Top" Width="120">
                     <ComboBoxItem Content="Header 1"/>
                     <ComboBoxItem Content="Header 2"/>
                     <ComboBoxItem Content="Header 3"/>
@@ -57,7 +57,7 @@
 
         <Frame Grid.Column="0" Visibility="hidden" x:Name="framerule" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0"/>
 
-        <Frame Grid.Column="0" Visibility="hidden" x:Name="framecodeblock" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0">
+        <Frame Grid.Column="0" Visibility="Hidden" x:Name="framecodeblock" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0">
             <Frame.Content>
                 <StackPanel>
                     <ComboBox SelectedIndex="0" BorderBrush="DarkGray" HorizontalAlignment="center" VerticalAlignment="Top" Width="120" Margin="0,20,0,0">
@@ -69,32 +69,32 @@
                         <ComboBoxItem Content="JavaScript"/>
                     </ComboBox>
 
-                    <Button Content="Bold" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,20,0,0" VerticalAlignment="Top" Width="60px"/>
-                    <Button Content="Italic" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,5,0,0" VerticalAlignment="Top" Width="60px"/>
+                    <Button Content="Bold" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,15,0,0" VerticalAlignment="center" Width="124" Height="40"/>
+                    <Button Content="Italic" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,5,0,0" VerticalAlignment="center" Width="124" Height="40"/>
                 </StackPanel>
             </Frame.Content>
         </Frame>
 
-        <Frame Grid.Column="0" Visibility="hidden" x:Name="frameimage" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0">
+        <Frame Grid.Column="0" Visibility="Hidden" x:Name="frameimage" VerticalAlignment="Top" Height="150px" Margin="0,230,0,0">
             <Frame.Content>
                 <Button Content="Open file" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,20,0,0"  VerticalAlignment="Center" Width="124" Height="50"/>
             </Frame.Content>
         </Frame>
 
-        <Frame Grid.Column="0" Visibility="Hidden" x:Name="frametasklist" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0">
+        <Frame Grid.Column="0" Visibility="Hidden" x:Name="frametasklist" VerticalAlignment="Top" Height="150px" Margin="0,230,0,0">
             <Frame.Content>
                 <StackPanel>
-                    <Label Margin="50,30,0,0" Content="Ilosc taskow do zrobienia"></Label>
-                    <TextBox HorizontalAlignment="center" TextWrapping="Wrap" VerticalAlignment="Top" Width="123" Height="40" Margin="0,20,0,0"/>
+                    <Label Margin="50,50,0,0" Content="Ilosc taskow do zrobienia"></Label>
+                    <TextBox HorizontalAlignment="center" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="20" Margin="0,20,0,0"/>
                 </StackPanel>
             </Frame.Content>
         </Frame>
 
-        <Frame Grid.Column="0" Visibility="hidden" x:Name="frametextblock" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0">
+        <Frame Grid.Column="0" Visibility="Hidden" x:Name="frametextblock" VerticalAlignment="Top" Height="150px" Margin="0,230,0,0">
             <Frame.Content>
                 <StackPanel>
-                    <Button Content="Bold" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,20,0,0" VerticalAlignment="center" Width="124px" Height="50"/>
-                    <Button Content="Italic" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,5,0,0" VerticalAlignment="center" Width="124px" Height="50"/>
+                    <Button Content="Bold" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,50,0,0" VerticalAlignment="center" Width="124" Height="40"/>
+                    <Button Content="Italic" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,5,0,0" VerticalAlignment="center" Width="124" Height="40"/>
 
                 </StackPanel>
             </Frame.Content>
@@ -104,17 +104,16 @@
             <Frame.Content>
                 <StackPanel>
                     <Label Margin="50,30,0,0" Content="Wpisz dlugosc itemlisty"></Label>
-                    <TextBox HorizontalAlignment="center" TextWrapping="Wrap" VerticalAlignment="center" Width="123" Height="40" Margin="0,20,0,0"/>
+                    <TextBox HorizontalAlignment="center" TextWrapping="Wrap" VerticalAlignment="center" Width="50" Height="20" Margin="0,20,0,0"/>
                 </StackPanel>
             </Frame.Content>
         </Frame>
-
         <Frame Grid.Column="0" Visibility="Hidden" x:Name="framelist" VerticalAlignment="Top" Height="150px" Margin="0,237,0,0">
             <Frame.Content>
                 <StackPanel>
                     <Label Margin="50,30,0,0" Content="Wpisz dlugosc listy"></Label>
-                    <TextBox HorizontalAlignment="center" TextWrapping="Wrap" VerticalAlignment="Top" Width="123" Height="40" Margin="0,20,0,0"/>
-                    <CheckBox HorizontalAlignment="center" Content="Numeryczna" Height="15" Margin="0,20,0,0" Width="120"/>
+                    <TextBox HorizontalAlignment="center" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="20" Margin="0,10,0,0"/>
+                    <CheckBox HorizontalAlignment="center" Content="Numeryczna" Height="15" Margin="0,5,0,0" Width="120"/>
                 </StackPanel>
             </Frame.Content>
         </Frame>
