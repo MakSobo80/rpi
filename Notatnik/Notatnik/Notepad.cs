@@ -18,6 +18,9 @@ namespace Notatnik
 {
     public partial class Notepad
     {
+        /// <summary>
+        ///test
+        /// </summary>
         //As when I am writing this UI is not implemented, so this var acts like text in TextBox (for OpenFile and SaveFile purposes)!
         public string writtenText = "# Test of Header\nTest of *paragraph*\nwhich has __two__ lines\n_________________\n1. This is first element of list\n8. that's a __second__ element\n- and this is unordered list\n- which has two elements";
 
