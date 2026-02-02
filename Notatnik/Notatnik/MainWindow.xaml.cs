@@ -19,7 +19,6 @@ namespace Notatnik
         public MainWindow()
         {
             InitializeComponent();
-            Notepad notatnik = new();
             var user = SessionData.CurrentUser;
             if (user != null)
             {
