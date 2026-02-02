@@ -31,10 +31,11 @@ namespace Notatnik
         //Format text from string form into list of elements
         public void FormatText()
         {
+            content.Clear();
             string[] writtenTextByLine = writtenText.Split('\n');
             for (int i = 0; i < writtenTextByLine.Length; i++)
             {
-                string currentLine = writtenTextByLine[i];
+                string currentLine = writtenTextByLine[i].TrimEnd('\r');
                 //If is header:
                 if (currentLine.Length > 0 && currentLine[0] == '#')
                 {
@@ -69,8 +70,8 @@ namespace Notatnik
                 }
 
                 //if is ordered list
-
-                if (OrderedListRegex().IsMatch(currentLine))
+                var orderedMatch = OrderedListRegex().Match(currentLine);
+                if (orderedMatch.Success)
                 {
                     Elements.MarkdownList? list = null;
                     if (content.Count > 0 && content[^1] is Elements.MarkdownList existingList && existingList.isOrdered)
@@ -85,7 +86,7 @@ namespace Notatnik
 
                     if (list != null)
                     {
-                        string listItemContent = currentLine[2..];
+                        string listItemContent = currentLine[orderedMatch.Length..];
                         list.AddListElement(SplitStringByStyles(listItemContent));
                         continue;
                     }
@@ -125,7 +126,7 @@ namespace Notatnik
                     string after = input[(last + marker.Length)..];
 
                     if (before != "")
-                        result.Add(new Elements.TextBlock(before));
+                        result.AddRange(SplitStringByStyles(before));
 
                     switch (marker.Length)
                     {
@@ -140,7 +141,9 @@ namespace Notatnik
                             break;
                     }
 
-                    result.AddRange(SplitStringByStyles(after));
+                    if (after != "")
+                        result.AddRange(SplitStringByStyles(after));
+                    return result;
                 }
             }
             if(result.Count == 0)
