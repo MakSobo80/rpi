@@ -20,119 +20,76 @@ namespace Notatnik
         {
             InitializeComponent();
         }
-
-    
-    private void selectheader(object sender, RoutedEventArgs e)
+        private void UkryjWszystkie()
         {
+            int i = 0;
+
+            Frame[] frames = new Frame[9];
+            frames[0] = frameheader;
+            frames[1] = framerule;
+            frames[2] = framecodeblock;
+            frames[3] = frameimage;
+            frames[4] = frametable;
+            frames[5] = frametasklist;
+            frames[6] = frametextblock;
+            frames[7] = framelistitem;
+            frames[8] = framelist;
+
+            while (i < frames.Length)
+            {
+                frames[i].Visibility = Visibility.Hidden;
+                i++;
+            }
+        }
+
+        private void selectheader(object sender, RoutedEventArgs e)
+        {
+            UkryjWszystkie();
             frameheader.Visibility = Visibility.Visible;
-            framerule.Visibility = Visibility.Hidden;
-            framecodeblock.Visibility = Visibility.Hidden;
-            frameimage.Visibility = Visibility.Hidden;
-            frametable.Visibility = Visibility.Hidden;
-            frametasklist.Visibility = Visibility.Hidden;
-            frametextblock.Visibility = Visibility.Hidden;
-            framelistitem.Visibility = Visibility.Hidden;
-            framelist.Visibility = Visibility.Hidden;
 
         }
         private void selectrule(object sender, RoutedEventArgs e)
         {
-            frameheader.Visibility = Visibility.Hidden;
+            UkryjWszystkie();
             framerule.Visibility = Visibility.Visible;
-            framecodeblock.Visibility = Visibility.Hidden;
-            frameimage.Visibility = Visibility.Hidden;
-            frametable.Visibility = Visibility.Hidden;
-            frametasklist.Visibility = Visibility.Hidden;
-            frametextblock.Visibility = Visibility.Hidden;
-            framelistitem.Visibility = Visibility.Hidden;
-            framelist.Visibility = Visibility.Hidden;
         }
         private void selectcodeblock(object sender, RoutedEventArgs e)
         {
-            frameheader.Visibility = Visibility.Hidden;
-            framerule.Visibility = Visibility.Hidden;
+            UkryjWszystkie();
             framecodeblock.Visibility = Visibility.Visible;
-            frameimage.Visibility = Visibility.Hidden;
-            frametable.Visibility = Visibility.Hidden;
-            frametasklist.Visibility = Visibility.Hidden;
-            frametextblock.Visibility = Visibility.Hidden;
-            framelistitem.Visibility = Visibility.Hidden;
-            framelist.Visibility = Visibility.Hidden;
         }
         private void selectimage(object sender, RoutedEventArgs e)
         {
-            frameheader.Visibility = Visibility.Hidden;
-            framerule.Visibility = Visibility.Hidden;
-            framecodeblock.Visibility = Visibility.Hidden;
+            UkryjWszystkie();
             frameimage.Visibility = Visibility.Visible;
-            frametable.Visibility = Visibility.Hidden;
-            frametasklist.Visibility = Visibility.Hidden;
-            frametextblock.Visibility = Visibility.Hidden;
-            framelistitem.Visibility = Visibility.Hidden;
-            framelist.Visibility = Visibility.Hidden;
         }
         private void selecttable(object sender, RoutedEventArgs e)
         {
-            frameheader.Visibility = Visibility.Hidden;
-            framerule.Visibility = Visibility.Hidden;
-            framecodeblock.Visibility = Visibility.Hidden;
-            frameimage.Visibility = Visibility.Hidden;
+            UkryjWszystkie();
             frametable.Visibility = Visibility.Visible;
-            frametasklist.Visibility = Visibility.Hidden;
-            frametextblock.Visibility = Visibility.Hidden;
-            framelistitem.Visibility = Visibility.Hidden;
-            framelist.Visibility = Visibility.Hidden;
         }
         private void selecttasklist(object sender, RoutedEventArgs e)
         {
-            frameheader.Visibility = Visibility.Hidden;
-            framerule.Visibility = Visibility.Hidden;
-            framecodeblock.Visibility = Visibility.Hidden;
-            frameimage.Visibility = Visibility.Hidden;
-            frametable.Visibility = Visibility.Hidden;
+            UkryjWszystkie();
             frametasklist.Visibility = Visibility.Visible;
-            frametextblock.Visibility = Visibility.Hidden;
-            framelistitem.Visibility = Visibility.Hidden;
-            framelist.Visibility = Visibility.Hidden;
         }
         private void selectTextBlock(object sender, RoutedEventArgs e)
         {
-            frameheader.Visibility = Visibility.Hidden;
-            framerule.Visibility = Visibility.Hidden;
-            framecodeblock.Visibility = Visibility.Hidden;
-            frameimage.Visibility = Visibility.Hidden;
-            frametable.Visibility = Visibility.Hidden;
-            frametasklist.Visibility = Visibility.Hidden;
+            UkryjWszystkie();
             frametextblock.Visibility = Visibility.Visible;
-            framelistitem.Visibility = Visibility.Hidden;
-            framelist.Visibility = Visibility.Hidden;
         }
         private void selectListItem(object sender, RoutedEventArgs e)
         {
-            frameheader.Visibility = Visibility.Hidden;
-            framerule.Visibility = Visibility.Hidden;
-            framecodeblock.Visibility = Visibility.Hidden;
-            frameimage.Visibility = Visibility.Hidden;
-            frametable.Visibility = Visibility.Hidden;
-            frametasklist.Visibility = Visibility.Hidden;
-            frametextblock.Visibility = Visibility.Hidden;
+            UkryjWszystkie();
             framelistitem.Visibility = Visibility.Visible;
-            framelist.Visibility = Visibility.Hidden;
         }
         private void selectlist(object sender, RoutedEventArgs e)
         {
-            frameheader.Visibility = Visibility.Hidden;
-            framerule.Visibility = Visibility.Hidden;
-            framecodeblock.Visibility = Visibility.Hidden;
-            frameimage.Visibility = Visibility.Hidden;
-            frametable.Visibility = Visibility.Hidden;
-            frametasklist.Visibility = Visibility.Hidden;
-            frametextblock.Visibility = Visibility.Hidden;
-            framelistitem.Visibility = Visibility.Hidden;
+            UkryjWszystkie();
             framelist.Visibility = Visibility.Visible;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Utworz_elem(object sender, RoutedEventArgs e)
         {
 
         }
