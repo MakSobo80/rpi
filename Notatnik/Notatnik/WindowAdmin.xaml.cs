@@ -24,7 +24,7 @@ namespace Notatnik
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Notat_guzik(object sender, RoutedEventArgs e)
         {
             var mainwindow = new MainWindow();
             mainwindow.Show();
@@ -32,7 +32,7 @@ namespace Notatnik
             this.Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Org_guzik(object sender, RoutedEventArgs e)
         {
             var orgwindow = new windoworg();
             orgwindow.Show();
@@ -40,7 +40,7 @@ namespace Notatnik
             this.Close();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void Zatw_guzik(object sender, RoutedEventArgs e)
         {
             var orgwindow = new windoworg();
             orgwindow.Show();

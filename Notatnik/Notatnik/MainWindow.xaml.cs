@@ -20,13 +20,6 @@ namespace Notatnik
         {
             InitializeComponent();
             var user = SessionData.CurrentUser;
-            if (user != null)
-            {
-                loggedInAs.Content = $"Zalogowano jako: {user?.Login}";
-            } else
-            {
-                loggedInAs.Content = "Nie zalogowano";
-            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -38,11 +31,7 @@ namespace Notatnik
         {
             Application.Current.Shutdown();
         }
-        
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+
         private void UkryjWszystkie()
         {
             int i = 0;
