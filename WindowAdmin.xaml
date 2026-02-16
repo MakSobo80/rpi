@@ -1,0 +1,22 @@
+﻿<Window x:Class="Notatnik.WindowAdmin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notatnik"
+        mc:Ignorable="d"
+        Background="DarkGray"
+        Title="WindowAdmin" Height="200" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Content="Notatnik" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,60"  VerticalAlignment="bottom"  Width="124" Height="50" Click="Button_Click"/>
+        <Button Grid.Column="1" Content="Organizacja" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,60"  VerticalAlignment="bottom"  Width="124" Height="50" Click="Button_Click_1"/>
+        <Button Grid.Column="2" Content="Zatwierdzanie" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,60"  VerticalAlignment="bottom"  Width="124" Height="50" Click="Button_Click_2"/>
+
+
+    </Grid>
+</Window>
