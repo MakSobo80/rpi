@@ -12,17 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Notatnik
 {
-    public partial class Notepad
+    public partial class Notepad(TextBox outputTextBox)
     {
-        /// <summary>
-        ///test
-        /// </summary>
-        //As when I am writing this UI is not implemented, so this var acts like text in TextBox (for OpenFile and SaveFile purposes)!
-        public string writtenText = "# Test of Header\nTest of *paragraph*\nwhich has __two__ lines\n_________________\n1. This is first element of list\n8. that's a __second__ element\n- and this is unordered list\n- which has two elements";
+        public TextBox writtenTextBox = outputTextBox;
+
+        public string WrittenText {
+            get { return _writtenText;}
+            set { _writtenText = value;
+                writtenTextBox.Text = value;}}
+
+        string _writtenText = "# Test of Header\nTest of *paragraph*\nwhich has __two__ lines\n_________________\n1. This is first element of list\n8. that's a __second__ element\n- and this is unordered list\n- which has two elements";
+
 
         public List<Element> content = [];
         public GitHubUser user = new();
@@ -32,7 +37,7 @@ namespace Notatnik
         public void FormatText()
         {
             content.Clear();
-            string[] writtenTextByLine = writtenText.Split('\n');
+            string[] writtenTextByLine = WrittenText.Split('\n');
             for (int i = 0; i < writtenTextByLine.Length; i++)
             {
                 string currentLine = writtenTextByLine[i].TrimEnd('\r');
@@ -176,9 +181,8 @@ namespace Notatnik
             {
                 string filePath = openFileDialog.FileName;
                 string fileContent = File.ReadAllText(filePath);
-                writtenText = fileContent;
+                WrittenText = fileContent;
                 FormatText();
-                MessageBox.Show($"Opened text: {ParseIntoString()}");
             }
         }
 
