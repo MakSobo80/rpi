@@ -14,7 +14,9 @@
             <ColumnDefinition Width="227*" />
             <ColumnDefinition Width="573*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1" Margin="10,10,10,10"  Background="#FFC5C3C3" />
+        <StackPanel Grid.Column="1" Margin="10,10,10,10"  Background="#FFC5C3C3">
+            <TextBox Text="dw" VerticalAlignment="Top" HorizontalAlignment="left" Margin="10" Width="276.5" Height="450"/>
+        </StackPanel>
         <ComboBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="0,222,0,0" Height="22" >
             <ComboBoxItem Selected="selectheader" x:Name="comboheader" Content="Header"/>
             <ComboBoxItem Selected="selectrule" x:Name="comborule" Content="Rule"/>
