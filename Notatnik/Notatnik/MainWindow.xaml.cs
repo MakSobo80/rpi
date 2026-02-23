@@ -22,6 +22,10 @@ namespace Notatnik
         {
             InitializeComponent();
             notepad = new Notepad(TextContent);
+            TextContent.TextChanged += (object sender, TextChangedEventArgs e) =>
+            {
+                notepad.WrittenText = TextContent.Text;
+            };
             var user = SessionData.CurrentUser;
         }
 

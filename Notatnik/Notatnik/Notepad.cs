@@ -195,7 +195,7 @@ namespace Notatnik
             };
             if (saveFileDialog.ShowDialog() == true) { 
                 string filePath = saveFileDialog.FileName;
-                //TODO: Convert content into string using function
+                FormatText();
                 string fileContent = ParseIntoString();
 
                 File.WriteAllText(filePath, fileContent);
