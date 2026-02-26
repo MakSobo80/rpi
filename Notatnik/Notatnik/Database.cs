@@ -10,8 +10,22 @@ namespace Notatnik
     internal static class Database
     {
         
-        public static void RegisterUser()
+        public static void RegisterUser(string username)
         {
-        }
+            if (string.IsNullOrEmpty(username))
+            {
+                return;
+            }
+             using (var context = new Models.AppDbContext())
+            {
+                var user = new Models.User
+                {
+                    Username = username,
+                    IsManager = false,
+                    OrganizationId = 1
+                };
+                context.Users.Add(user);
+                context.SaveChanges();
+            }
     }
 }
