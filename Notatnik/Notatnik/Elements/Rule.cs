@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Notatnik.Elements
 {
     internal class Rule : Element
     {
-        public override void Display()
+        public override void Display(FrameworkElement pointer)
         {
             throw new NotImplementedException();
         }

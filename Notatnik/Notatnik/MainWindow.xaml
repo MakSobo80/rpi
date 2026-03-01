@@ -16,6 +16,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" Margin="10,10,10,10"  Background="#FFC5C3C3">
             <TextBox x:Name="TextContent"
+                 Height="200"
                  AcceptsReturn="True"
                  AcceptsTab="True"
                  VerticalScrollBarVisibility="Auto"
@@ -23,6 +24,12 @@
                  TextWrapping="Wrap"
                  VerticalAlignment="Stretch"
                  SpellCheck.IsEnabled="True"/>
+            <Canvas Width="550" Height="215" Margin="0 0 0 0" HorizontalAlignment="Left">
+                <!-- This is pointer used for markdown preview, it doesn't need to be rectangle nor visible-->
+                <Rectangle Canvas.Top="0" Canvas.Left="0" Width="5px" Height="5px" Fill="Black" x:Name="Pointer">
+                    
+                </Rectangle>
+            </Canvas>
         </StackPanel>
         <ComboBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="0,222,0,0" Height="22" >
             <ComboBoxItem Selected="selectheader" x:Name="comboheader" Content="Header"/>

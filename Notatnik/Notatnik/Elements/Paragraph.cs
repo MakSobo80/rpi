@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace Notatnik.Elements
 {
@@ -10,9 +13,15 @@ namespace Notatnik.Elements
     {
         public List<Element> content = contentInParagraph;
 
-        public override void Display()
+        public override void Display(FrameworkElement pointer)
         {
-            throw new NotImplementedException();
+            foreach (Element element in content)
+            {
+                element.Display(pointer);
+            }
+
+            Canvas.SetTop(pointer, Canvas.GetTop(pointer) + 32);
+            Canvas.SetLeft(pointer, 0);
         }
 
         public override string ParseToString()

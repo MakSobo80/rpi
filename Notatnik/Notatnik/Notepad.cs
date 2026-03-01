@@ -17,17 +17,20 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Notatnik
 {
-    public partial class Notepad(TextBox outputTextBox)
+    //If we do that preview is not always visible then this should be changed
+    public partial class Notepad(TextBox outputTextBox, FrameworkElement pointer)
     {
         public TextBox writtenTextBox = outputTextBox;
 
         public string WrittenText {
             get { return _writtenText;}
             set { _writtenText = value;
-                writtenTextBox.Text = value;}}
+                writtenTextBox.Text = value;
+                DisplayElements();
+            }
+        }
 
         string _writtenText = "# Test of Header\nTest of *paragraph*\nwhich has __two__ lines\n_________________\n1. This is first element of list\n8. that's a __second__ element\n- and this is unordered list\n- which has two elements";
-
 
         public List<Element> content = [];
         public GitHubUser user = new();
@@ -136,13 +139,13 @@ namespace Notatnik
                     switch (marker.Length)
                     {
                         case 3:
-                            result.Add(new Elements.TextBlock(between) { style = Elements.TextBlock.TextStyle.ItalicBold });
+                            result.Add(new Elements.Text(between) { style = Elements.Text.TextStyle.ItalicBold });
                             break;
                         case 2:
-                            result.Add(new Elements.TextBlock(between) { style = Elements.TextBlock.TextStyle.Bold });
+                            result.Add(new Elements.Text(between) { style = Elements.Text.TextStyle.Bold });
                             break;
                         case 1:
-                            result.Add(new Elements.TextBlock(between) { style = Elements.TextBlock.TextStyle.Italic });
+                            result.Add(new Elements.Text(between) { style = Elements.Text.TextStyle.Italic });
                             break;
                     }
 
@@ -153,7 +156,7 @@ namespace Notatnik
             }
             if(result.Count == 0)
             {
-                result.Add(new Elements.TextBlock(input));
+                result.Add(new Elements.Text(input));
             }
 
             return result;
@@ -200,6 +203,30 @@ namespace Notatnik
 
                 File.WriteAllText(filePath, fileContent);
                 MessageBox.Show($"Saved file in: {filePath}");
+            }
+        }
+
+        public void DisplayElements()
+        {
+            DeletePreviewElements();
+            FormatText();
+            foreach (Element element in content){
+                if (element is Elements.Text || element is Elements.Paragraph)
+                    element.Display(pointer);
+            }
+        }
+
+        public void DeletePreviewElements()
+        {
+            Canvas.SetTop(pointer, 0);
+            Canvas.SetLeft(pointer, 0);
+            Canvas canvas = (Canvas)pointer.Parent;
+            for (int i = canvas.Children.Count - 1; i >= 0; i--)
+            {
+                if (canvas.Children[i] != pointer)
+                {
+                    canvas.Children.Remove(canvas.Children[i]);
+                }
             }
         }
 

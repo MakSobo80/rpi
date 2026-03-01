@@ -21,7 +21,7 @@ namespace Notatnik
         public MainWindow()
         {
             InitializeComponent();
-            notepad = new Notepad(TextContent);
+            notepad = new(TextContent, Pointer);
             TextContent.TextChanged += (object sender, TextChangedEventArgs e) =>
             {
                 notepad.WrittenText = TextContent.Text;
