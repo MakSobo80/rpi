@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Notatnik.Elements
 {
@@ -11,7 +12,7 @@ namespace Notatnik.Elements
         public string text = textInHeader;
         public int type = headerType;
 
-        public override void Display()
+        public override void Display(FrameworkElement pointer)
         {
             throw new NotImplementedException();
         }

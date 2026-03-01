@@ -16,9 +16,16 @@ namespace Notatnik
     /// </summary>
     public partial class MainWindow : Window
     {
+        Notepad notepad;
+
         public MainWindow()
         {
             InitializeComponent();
+            notepad = new(TextContent, Pointer);
+            TextContent.TextChanged += (object sender, TextChangedEventArgs e) =>
+            {
+                notepad.WrittenText = TextContent.Text;
+            };
             var user = SessionData.CurrentUser;
         }
 
@@ -30,6 +37,16 @@ namespace Notatnik
         private void Window_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void OpenFile(object sender, EventArgs e)
+        {
+            notepad.OpenFile();
+        }
+
+        private void SaveFile(object sender, EventArgs e)
+        {
+            notepad.SaveFile();
         }
 
         private void UkryjWszystkie()
