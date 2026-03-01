@@ -26,15 +26,15 @@ namespace Notatnik
             {
                 notepad.WrittenText = TextContent.Text;
             };
-            var user = SessionData.LoggedInUser;
-            if (user != null)
-            {
-                loggedInAs.Content = $"Zalogowano jako: {user?.Login}\n z organizacji {Database.GetOrganization(user?.organizationId).Name}";
-            }
-            else
-            {
-                loggedInAs.Content = "Nie zalogowano";
-            }
+            var user = Session.LoggedInUser;
+            //if (user != null)
+            //{
+            //    loggedInAs.Content = $"Zalogowano jako: {user?.Login}\n z organizacji {Database.GetOrganization(user?.organizationId).Name}";
+            //}
+            //else
+            //{
+            //    loggedInAs.Content = "Nie zalogowano";
+            //}
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
