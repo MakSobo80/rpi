@@ -84,10 +84,6 @@ public partial class AppDbContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.IsManager).HasColumnName("is_manager");
             entity.Property(e => e.OrganizationId).HasColumnName("organization_id");
-            entity.Property(e => e.Password)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("password");
             entity.Property(e => e.Username)
                 .HasMaxLength(10)
                 .IsFixedLength()

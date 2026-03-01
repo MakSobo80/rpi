@@ -79,6 +79,7 @@ namespace Notatnik
                 return false;
             }
             SaveSession(token.AccessToken!);
+            FetchUserDataFromDatabase();
 
             return true;
         }
@@ -135,6 +136,8 @@ namespace Notatnik
             var userTask = await FetchGitHubUserAsync(sessionData.AccessToken!);
             LoggedInUser = userTask;
 
+            FetchUserDataFromDatabase();
+
             return true;
         }
 
@@ -150,6 +153,23 @@ namespace Notatnik
             var responseContent = await meResp.Content.ReadAsStringAsync();
             var user = JsonSerializer.Deserialize<User>(responseContent);
             return user;
+        }
+
+        private static void FetchUserDataFromDatabase()
+        {
+            if (LoggedInUser == null)
+                return;
+            if (!Database.UserExists(LoggedInUser!.Login!))
+            {
+                Database.RegisterUser(LoggedInUser.Login!);
+            }
+            using var context = new Models.AppDbContext();
+            var dbUser = context.Users.FirstOrDefault(u => u.Username == LoggedInUser.Login);
+            if (dbUser != null)
+            {
+                LoggedInUser.organizationId = dbUser.OrganizationId;
+                LoggedInUser.isManager = dbUser.IsManager;
+            }
         }
 
         public class User
