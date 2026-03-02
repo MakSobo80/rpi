@@ -25,7 +25,7 @@ namespace Notatnik
                     var mainWindow = new MainWindow();
                     Application.Current.MainWindow = mainWindow;
                     if(Session.LoggedInUser != null)
-                        MessageBox.Show("Zalogowano jako: " + Session.LoggedInUser.Login);
+                        MessageBox.Show("Zalogowano jako: " + Session.LoggedInUser.Login + " z organizacji " + Database.GetOrganization(Session.LoggedInUser.organizationId).Name);
                     else
                         MessageBox.Show("Kontynuowano bez logowania");
                     mainWindow.Show();
