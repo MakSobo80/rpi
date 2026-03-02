@@ -1,31 +1,44 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
-using System.Web;
 using System.Text.Json.Serialization;
-using static Notatnik.Session;
+using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
+using static Notatnik.Session;
+using static System.Net.WebRequestMethods;
 
 namespace Notatnik
 {
     internal static class Session
     {
         static readonly HttpClient http = new();
-        private const string ClientId = "Ov23lixBJaaA5LSXOjY2";
-        private const string ClientSecret = "84b829953644741c72cec3f2a9554de2d8ff59a2";
+        private static string ClientId;
+        private static string ClientSecret;
         private const string GitHubAuthorizeUrl = "https://github.com/login/oauth/authorize";
         private const string GitHubTokenUrl = "https://github.com/login/oauth/access_token";
         private const string GitHubUserApiUrl = "https://api.github.com/user";
 
         public static User? LoggedInUser { get; set; }
+
+        static Session()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
+
+            IConfigurationRoot configuration = builder.Build();
+
+            ClientId = configuration["GitHub:ClientId"] ?? string.Empty;
+            ClientSecret = configuration["GitHub:ClientSecret"];
+        }
 
         public static async Task<bool> LoginWithGithub()
         {
