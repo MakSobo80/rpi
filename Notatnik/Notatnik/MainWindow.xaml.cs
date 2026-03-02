@@ -16,9 +16,16 @@ namespace Notatnik
     /// </summary>
     public partial class MainWindow : Window
     {
+        Notepad notepad;
+
         public MainWindow()
         {
             InitializeComponent();
+            notepad = new(TextContent, Pointer);
+            TextContent.TextChanged += (object sender, TextChangedEventArgs e) =>
+            {
+                notepad.WrittenText = TextContent.Text;
+            };
             var user = SessionData.CurrentUser;
         }
 
@@ -32,6 +39,16 @@ namespace Notatnik
             Application.Current.Shutdown();
         }
 
+        private void OpenFile(object sender, EventArgs e)
+        {
+            notepad.OpenFile();
+        }
+
+        private void SaveFile(object sender, EventArgs e)
+        {
+            notepad.SaveFile();
+        }
+
         private void UkryjWszystkie()
         {
             int i = 0;
@@ -43,7 +60,7 @@ namespace Notatnik
             frames[3] = frameimage;
             frames[4] = frametable;
             frames[5] = frametasklist;
-            frames[6] = frametextblock;
+            frames[6] = frametext;
             frames[7] = framelistitem;
             frames[8] = framelist;
 
@@ -85,10 +102,10 @@ namespace Notatnik
             UkryjWszystkie();
             frametasklist.Visibility = Visibility.Visible;
         }
-        private void selectTextBlock(object sender, RoutedEventArgs e)
+        private void selectText(object sender, RoutedEventArgs e)
         {
             UkryjWszystkie();
-            frametextblock.Visibility = Visibility.Visible;
+            frametext.Visibility = Visibility.Visible;
         }
         private void selectListItem(object sender, RoutedEventArgs e)
         {
