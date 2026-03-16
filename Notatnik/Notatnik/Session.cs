@@ -176,8 +176,7 @@ namespace Notatnik
             {
                 Database.RegisterUser(LoggedInUser.Login!);
             }
-            using var context = new Models.AppDbContext();
-            var dbUser = context.Users.FirstOrDefault(u => u.Username == LoggedInUser.Login);
+            var dbUser = Database.GetUser(LoggedInUser.Login);
             if (dbUser != null)
             {
                 LoggedInUser.organizationId = dbUser.OrganizationId;

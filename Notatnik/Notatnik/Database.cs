@@ -20,14 +20,21 @@ namespace Notatnik
 
             using (var context = new Models.AppDbContext())
             {
-                var user = new Models.User
+                try
                 {
-                    Username = username,
-                    IsManager = false,
-                    OrganizationId = 1
-                };
-                context.Users.Add(user);
-                context.SaveChanges();
+                    var user = new Models.User
+                    {
+                        Username = username,
+                        IsManager = false,
+                        OrganizationId = 1
+                    };
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                }
+                catch
+                {
+                    return;
+                }
             }
         }
 
@@ -35,7 +42,33 @@ namespace Notatnik
         {
             using (var context = new Models.AppDbContext())
             {
-                return context.Users.Any(u => u.Username == username);
+                try
+                {
+                    return context.Users.Any(u => u.Username == username);
+                } catch {
+                    return true;
+                }
+            }
+        }
+
+        public static User GetUser(string username)
+        {
+            using (var context = new Models.AppDbContext())
+            {
+                User user;
+                try
+                {
+                    user = context.Users.FirstOrDefault(u => u.Username == username);
+                } catch
+                {
+                    user = new Models.User
+                    {
+                        Username = username,
+                        IsManager = false,
+                        OrganizationId = 0
+                    };
+                }
+                return user;
             }
         }
 
@@ -47,7 +80,19 @@ namespace Notatnik
             }
             using (var context = new Models.AppDbContext())
             {
-                return context.Organizations.FirstOrDefault(o => o.Id == organizationId);
+                Organization organization;
+                try
+                {
+                    organization = context.Organizations.FirstOrDefault(o => o.Id == organizationId);
+                } catch
+                {
+                    organization = new Models.Organization
+                    {
+                        Id = (byte)organizationId,
+                        Name = "Unknown"
+                    };
+                }
+                return organization;
             }
         }
 
@@ -55,16 +100,23 @@ namespace Notatnik
         {
             using (var context = new Models.AppDbContext())
             {
-                var file = new Models.Filez
+                try
                 {
-                    Name = name,
-                    File = fileContent,
-                    AuthorId = (byte)authorId,
-                    OrganizationId = (byte)organizationId,
-                    Parent = (byte)parentId
-                };
-                context.Filezs.Add(file);
-                context.SaveChanges();
+                    var file = new Models.Filez
+                    {
+                        Name = name,
+                        File = fileContent,
+                        AuthorId = (byte)authorId,
+                        OrganizationId = (byte)organizationId,
+                        Parent = (byte)parentId
+                    };
+                    context.Filezs.Add(file);
+                    context.SaveChanges();
+                }
+                catch
+                {
+                    return;
+                }
             }
         }
     }
