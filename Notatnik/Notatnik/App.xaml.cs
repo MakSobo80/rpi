@@ -5,14 +5,13 @@ namespace Notatnik
 {
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
-            var user = LoadUserSession();
-            if (user != null)
+            bool sessionLoaded = await Session.LoadSession();
+            if (sessionLoaded)
             {
                 var mainWindow = new MainWindow();
                 Application.Current.MainWindow = mainWindow;
@@ -25,8 +24,12 @@ namespace Notatnik
                 {
                     var mainWindow = new MainWindow();
                     Application.Current.MainWindow = mainWindow;
-                    if(SessionData.CurrentUser != null)
-                        MessageBox.Show("Zalogowano jako: " + SessionData.CurrentUser?.Login);
+                    if(Session.LoggedInUser != null)
+                    {
+                        var org = Database.GetOrganization(Session.LoggedInUser.organizationId);
+                        var orgName = org?.Name ?? "brak";
+                        MessageBox.Show("Zalogowano jako: " + Session.LoggedInUser.Login + " z organizacji " + orgName);
+                    }
                     else
                         MessageBox.Show("Kontynuowano bez logowania");
                     mainWindow.Show();
@@ -38,33 +41,5 @@ namespace Notatnik
             }
         }
 
-
-
-        private GitHubUser? LoadUserSession()
-        {
-            string filePath = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "Notatnik",
-                "session.json");
-
-            if (!System.IO.File.Exists(filePath))
-                return null;
-
-            string json = System.IO.File.ReadAllText(filePath);
-            var sessionData = JsonSerializer.Deserialize<SessionFile>(json);
-
-            if (sessionData != null)
-            {
-                SessionData.CurrentUser = sessionData.User;
-                return sessionData.User;
-            }
-
-            return null;
-        }
-    }
-    public class SessionFile
-    {
-        public GitHubUser? User { get; set; }
-        public string? AccessToken { get; set; }
     }
 }
