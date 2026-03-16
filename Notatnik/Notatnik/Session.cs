@@ -37,7 +37,9 @@ namespace Notatnik
             IConfigurationRoot configuration = builder.Build();
 
             ClientId = configuration["GitHub:ClientId"] ?? string.Empty;
-            ClientSecret = configuration["GitHub:ClientSecret"];
+            ClientSecret = configuration["GitHub:ClientSecret"] ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(ClientId) || string.IsNullOrWhiteSpace(ClientSecret))
+                throw new InvalidOperationException("GitHub OAuth credentials are missing in appsettings.json.");
         }
 
         public static async Task<bool> LoginWithGithub()
