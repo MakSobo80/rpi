@@ -46,7 +46,7 @@ namespace Notatnik
                 {
                     return context.Users.Any(u => u.Username == username);
                 } catch {
-                    return true;
+                    return false;
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace Notatnik
             }
         }
 
-        public static Organization GetOrganization(int? organizationId)
+        public static Organization? GetOrganization(int? organizationId)
         {
             if (organizationId == null)
             {
@@ -80,15 +80,17 @@ namespace Notatnik
             }
             using (var context = new Models.AppDbContext())
             {
-                Organization organization;
+                Organization? organization;
                 try
                 {
                     organization = context.Organizations.FirstOrDefault(o => o.Id == organizationId);
                 } catch
                 {
+                    if (organizationId < byte.MinValue || organizationId > byte.MaxValue)
+                        return null;
                     organization = new Models.Organization
                     {
-                        Id = (byte)organizationId,
+                        Id = checked((byte)organizationId.Value),
                         Name = "Unknown"
                     };
                 }
