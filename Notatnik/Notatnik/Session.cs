@@ -186,7 +186,8 @@ namespace Notatnik
             userReq.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var meResp = await http.SendAsync(userReq);
-            meResp.EnsureSuccessStatusCode();
+            if (!meResp.IsSuccessStatusCode)
+                return null;
 
             var responseContent = await meResp.Content.ReadAsStringAsync();
             var user = JsonSerializer.Deserialize<User>(responseContent);
