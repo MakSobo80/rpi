@@ -63,8 +63,16 @@ namespace Notatnik
 
             var ctx = await listener.GetContextAsync();
             var query = HttpUtility.ParseQueryString(ctx.Request.Url!.Query);
-            string code = query["code"]!;
-            string returnedState = query["state"]!;
+            string code = query["code"];
+            string returnedState = query["state"];
+            if(string.IsNullOrEmpty(returnedState) || !string.Equals(returnedState, state, StringComparison.Ordinal))
+            {
+                ctx.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var errorBytes = Encoding.UTF8.GetBytes("Invalid state parameter.");
+                await ctx.Response.OutputStream.WriteAsync(errorBytes);
+                ctx.Response.Close();
+                return false;
+            }
 
             var responseBytes = Encoding.UTF8.GetBytes("You may now close this window.");
             ctx.Response.ContentLength64 = responseBytes.Length;
@@ -83,10 +91,17 @@ namespace Notatnik
             req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var resp = await http.SendAsync(req);
-            var body = await resp.Content.ReadAsStringAsync();
-            var token = JsonSerializer.Deserialize<Token>(body)!;
+            if (!resp.IsSuccessStatusCode)
+                return false;
 
-            LoggedInUser = await FetchGitHubUserAsync(token.AccessToken!);
+            var body = await resp.Content.ReadAsStringAsync();
+            var token = JsonSerializer.Deserialize<Token>(body);
+            if(string.IsNullOrEmpty(token?.AccessToken))
+            {
+                return false;
+            }
+
+            LoggedInUser = await FetchGitHubUserAsync(token.AccessToken);
             if(LoggedInUser == null)
             {
                 return false;
