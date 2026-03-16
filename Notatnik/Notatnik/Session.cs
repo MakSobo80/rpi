@@ -163,11 +163,19 @@ namespace Notatnik
                 return false;
             }
 
-            var userTask = await FetchGitHubUserAsync(sessionData.AccessToken!);
-            LoggedInUser = userTask;
+            try
+            {
+                LoggedInUser = await FetchGitHubUserAsync(sessionData.AccessToken!);
+            }
+            catch (HttpRequestException)
+            {
+                return false;
+            }
+
+            if (LoggedInUser == null)
+                return false;
 
             FetchUserDataFromDatabase();
-
             return true;
         }
 
