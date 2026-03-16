@@ -71,7 +71,7 @@ namespace Notatnik.Elements
 
         public override string ParseToString()
         {
-            return $"\n{new string('#', type)} {text}\n";
+            return $"{new string('#', type)} {text}\n";
         }
     }
 }

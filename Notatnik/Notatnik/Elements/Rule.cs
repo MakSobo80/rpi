@@ -30,7 +30,7 @@ namespace Notatnik.Elements
 
         public override string ParseToString()
         {
-            return $"\n***\n";
+            return $"***\n";
         }
     }
 }
