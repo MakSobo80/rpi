@@ -33,7 +33,6 @@ namespace Notatnik
         string _writtenText = "# Test of Header\nTest of *paragraph*\nwhich has __two__ lines\n_________________\n1. This is first element of list\n8. that's a __second__ element\n- and this is unordered list\n- which has two elements";
 
         public List<Element> content = [];
-        public GitHubUser user = new();
 
 
         //Format text from string form into list of elements
@@ -230,7 +229,7 @@ namespace Notatnik
             }
         }
 
-        public void SendFile(int fileId, GitHubUser user)
+        public void SendFile(int fileId)
         {
             throw new NotImplementedException();
         }
