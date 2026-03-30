@@ -93,7 +93,7 @@ namespace Notatnik.Elements
                 currentLine += 1;
                 textBlock = new()
                 {
-                    Text = text,
+                    Text = text.Replace(" ", "\u00A0"),
                     FontSize = 20
                 };
                 parentCanvas = (Canvas)pointer.Parent;
