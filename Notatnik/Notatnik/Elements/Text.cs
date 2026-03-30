@@ -76,30 +76,45 @@ namespace Notatnik.Elements
 
         public override void Display(FrameworkElement pointer)
         {
-            TextBlock textBlock = new()
+            Canvas parentCanvas = (Canvas)pointer.Parent;
+
+            int wrappingLimit = 500;
+            double startX = Canvas.GetLeft(pointer);
+            double startY = Canvas.GetTop(pointer);
+
+            TextBlock measureBlock = new TextBlock
             {
                 FontSize = 20
             };
-            Canvas parentCanvas = (Canvas)pointer.Parent;
-            parentCanvas.Children.Add(textBlock);
 
-            int wrappingLimit = 500;
-            List<string> splitString = SplitByWidthFast(text, textBlock, wrappingLimit - Canvas.GetLeft(pointer), wrappingLimit);
-
-            int currentLine = 0;
-            foreach (string text in splitString)
+            switch (style)
             {
+                case TextStyle.Bold:
+                    measureBlock.FontWeight = FontWeights.Bold;
+                    break;
+                case TextStyle.Italic:
+                    measureBlock.FontStyle = FontStyles.Italic;
+                    break;
+                case TextStyle.ItalicBold:
+                    measureBlock.FontStyle = FontStyles.Italic;
+                    measureBlock.FontWeight = FontWeights.Bold;
+                    break;
+            }
 
-                currentLine += 1;
-                textBlock = new()
+            List<string> splitString = SplitByWidthFast(text, measureBlock, wrappingLimit - startX, wrappingLimit);
+
+            double currentX = startX;
+            double currentY = startY;
+
+            for (int i = 0; i < splitString.Count; i++)
+            {
+                string lineText = splitString[i];
+
+                TextBlock textBlock = new TextBlock
                 {
-                    Text = text.Replace(" ", "\u00A0"),
+                    Text = lineText.Replace(" ", "\u00A0"),
                     FontSize = 20
                 };
-                parentCanvas = (Canvas)pointer.Parent;
-                parentCanvas.Children.Add(textBlock);
-                Canvas.SetLeft(textBlock, Canvas.GetLeft(pointer));
-                Canvas.SetTop(textBlock, Canvas.GetTop(pointer));
 
                 switch (style)
                 {
@@ -114,8 +129,7 @@ namespace Notatnik.Elements
                         textBlock.FontWeight = FontWeights.Bold;
                         break;
                 }
-
-                // mierzymy szerokość ostatniej linii
+               
                 var ft = new FormattedText(
                     textBlock.Text,
                     CultureInfo.CurrentCulture,
@@ -126,22 +140,27 @@ namespace Notatnik.Elements
                     VisualTreeHelper.GetDpi(textBlock).PixelsPerDip
                 );
 
-                // pozycja końca tekstu względem TextBlock
-                double endX = ft.Width;
-                double endY = textBlock.ActualHeight + Canvas.GetTop(pointer); // opcjonalnie dół TextBlocka
+                double lineWidth = ft.Width;
+                double lineHeight = ft.Height;
 
-                if (endX > 0.95 * wrappingLimit || (text == splitString[0] && endX > 0.95 * (wrappingLimit - Canvas.GetLeft(pointer))))
-                    Canvas.SetTop(pointer, endY + 20);
+                parentCanvas.Children.Add(textBlock);
+                Canvas.SetLeft(textBlock, currentX);
+                Canvas.SetTop(textBlock, currentY);
 
-                if (text == splitString[splitString.Count - 1])
-                    Canvas.SetLeft(pointer, Canvas.GetLeft(textBlock) + endX);
-                else
-                    Canvas.SetLeft(pointer, 0);
-
-                Canvas.SetTop(textBlock, endY);
+                if (i == splitString.Count - 1)
+                {
+                    Canvas.SetLeft(pointer, currentX + lineWidth);
+                    Canvas.SetTop(pointer, currentY);
+                }
+                else 
+                {
+                    currentY += lineHeight;
+                    Canvas.SetTop(pointer, currentY);
+                    currentX = 0;
+                    Canvas.SetLeft(pointer, currentX);
+                }
             }
         }
-
         public override string ParseToString()
         {
             return style switch

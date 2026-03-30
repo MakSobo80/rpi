@@ -28,7 +28,7 @@ namespace Notatnik.Elements
             Canvas.SetLeft(textBlock, Canvas.GetLeft(pointer));
             Canvas.SetTop(textBlock, Canvas.GetTop(pointer));
 
-            switch (type)
+            switch (Math.Clamp(type, 1, 6))
             {
                 case 1:
                     textBlock.FontSize = 40;
