@@ -137,10 +137,13 @@
             <MenuItem Grid.Column="0" Header="_Plik">
                 <MenuItem Header="Otwórz plik" x:Name="menuOpenFile" Click="OpenFile"/>
                 <MenuItem Header="Zapisz plik" x:Name="menuSaveFile" Click="SaveFile"/>
-                <MenuItem Header="Wyślij plik" x:Name="menuSendFile" />
-                <MenuItem Header="Pobierz plik" x:Name="menuGetFile" />
+                <MenuItem Header="Wyślij plik" x:Name="menuSendFile" Click="SendFile"/>
+                <MenuItem Header="Pobierz plik" x:Name="menuGetFile" Click="GetFile"/>
                 <Separator />
-                <MenuItem Header="Zamknij" x:Name="menuExit" />
+                <MenuItem Header="Zamknij" x:Name="menuExit" Click="Window_Closed"/>
+            </MenuItem>
+            <MenuItem Header="_Administracja">
+                <MenuItem Header="Panel administracyjny" Click="OpenAdmin"/>
             </MenuItem>
         </Menu>
         <Button Content="Utworz element" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="Center" Margin="0,394,0,0"  VerticalAlignment="Top"  Width="124" Height="50" Click="Button_Click"/>

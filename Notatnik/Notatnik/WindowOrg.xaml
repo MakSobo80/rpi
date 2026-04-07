@@ -5,8 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notatnik"
         mc:Ignorable="d"
-        Title="windoworg" Height="450" Width="800">
-    <Grid>
-        
+        Background="DarkGray"
+        Title="Zarządzanie organizacją" Height="480" Width="600">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Organization info -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+            <Label Content="Organizacja:" FontWeight="Bold" Foreground="White"/>
+            <Label x:Name="labelOrgName" Content="—" Foreground="White"/>
+        </StackPanel>
+
+        <!-- New org row (visible for managers) -->
+        <StackPanel Grid.Row="1" x:Name="panelNowOrg" Orientation="Horizontal" Margin="0,0,0,8" Visibility="Collapsed">
+            <Label Content="Nowa organizacja:" Foreground="White"/>
+            <TextBox x:Name="txtNewOrgName" Width="120" Margin="5,0,0,0"/>
+            <Button Content="Utwórz" Width="70" Margin="5,0,0,0" Click="UtworzOrg_Click"
+                    Background="#FFE5E5E5" BorderBrush="DarkGray"/>
+        </StackPanel>
+
+        <!-- Members list -->
+        <GroupBox Grid.Row="2" Header="Członkowie" Foreground="White" Margin="0,0,0,8">
+            <ListBox x:Name="listMembers" DisplayMemberPath="DisplayText" Margin="4"/>
+        </GroupBox>
+
+        <!-- Manager action buttons -->
+        <StackPanel Grid.Row="3" x:Name="panelManagerButtons" Orientation="Horizontal"
+                    HorizontalAlignment="Center" Margin="0,0,0,8" Visibility="Collapsed">
+            <Button Content="Usuń z organizacji" Width="140" Height="40" Margin="5,0"
+                    Background="#FFE5E5E5" BorderBrush="DarkGray" Click="UsunUzytkownika_Click"/>
+            <Button Content="Zmień status managera" Width="160" Height="40" Margin="5,0"
+                    Background="#FFE5E5E5" BorderBrush="DarkGray" Click="ZmienManagera_Click"/>
+        </StackPanel>
+
+        <!-- Back button -->
+        <Button Grid.Row="4" Content="Powrót" Width="100" Height="36" HorizontalAlignment="Right"
+                Background="#FFE5E5E5" BorderBrush="DarkGray" Click="Powrot_Click"/>
     </Grid>
 </Window>

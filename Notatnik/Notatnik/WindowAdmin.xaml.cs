@@ -42,8 +42,8 @@ namespace Notatnik
 
         private void Zatw_guzik(object sender, RoutedEventArgs e)
         {
-            var orgwindow = new windoworg();
-            orgwindow.Show();
+            var confirmWindow = new windowconfirm();
+            confirmWindow.Show();
 
             this.Close();
         }
