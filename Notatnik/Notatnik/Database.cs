@@ -10,6 +10,8 @@ namespace Notatnik
 {
     internal static class Database
     {
+        private const int MaxNameLength = 10;
+        private const byte DefaultOrganizationId = 1;
 
         public static void RegisterUser(string username)
         {
@@ -104,7 +106,7 @@ namespace Notatnik
             {
                 try
                 {
-                    string safeName = name.Length > 10 ? name.Substring(0, 10) : name;
+                    string safeName = name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name;
                     var file = new Models.Filez
                     {
                         Name = safeName,
@@ -201,7 +203,7 @@ namespace Notatnik
                     var user = context.Users.FirstOrDefault(u => u.Id == userId);
                     if (user != null)
                     {
-                        user.OrganizationId = 1;
+                        user.OrganizationId = DefaultOrganizationId;
                         context.SaveChanges();
                     }
                 }
@@ -268,7 +270,7 @@ namespace Notatnik
             {
                 try
                 {
-                    string safeName = name.Length > 10 ? name.Substring(0, 10) : name;
+                    string safeName = name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name;
                     var org = new Models.Organization { Name = safeName };
                     context.Organizations.Add(org);
                     context.SaveChanges();
