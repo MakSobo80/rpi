@@ -143,7 +143,7 @@ namespace Notatnik
                     return;
                 }
 
-                int fileId = (int)selected.Tag;
+                int fileId = (int)(byte)selected.Tag;
                 var fileData = Database.GetFileById(fileId);
                 if (fileData == null)
                 {
