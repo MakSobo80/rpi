@@ -210,7 +210,7 @@ namespace Notatnik
             DeletePreviewElements();
             FormatText();
             foreach (Element element in content){
-                if (element is Elements.Text || element is Elements.Paragraph)
+                if (element is Elements.Text || element is Elements.Paragraph || element is Elements.Header || element is Elements.Rule)
                     element.Display(pointer);
             }
         }

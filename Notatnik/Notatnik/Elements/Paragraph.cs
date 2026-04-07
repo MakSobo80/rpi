@@ -31,7 +31,7 @@ namespace Notatnik.Elements
             {
                 text += content[i].ParseToString();
             };
-            return $"\n{text}\n";
+            return $"{text}";
         }
     }
 }
