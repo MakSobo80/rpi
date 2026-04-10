@@ -27,6 +27,7 @@ namespace Notatnik
             {
                 notepad.WrittenText = TextContent.Text;
             };
+            Loaded += (s, ev) => RefreshFileTree();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -90,6 +91,7 @@ namespace Notatnik
 
             string folder = FileStorageHelper.GetOrgDataFolder(user.organizationId.Value);
             FileStorageHelper.DownloadDatabaseToFolder(user.organizationId.Value);
+            RefreshFileTree();
             MessageBox.Show($"Pliki zostały pobrane do folderu '{folder}'.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void OpenAdmin(object sender, RoutedEventArgs e)
@@ -171,6 +173,63 @@ namespace Notatnik
         private void Utworz_elem(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void RefreshFileTree()
+        {
+            fileTree.Items.Clear();
+            var user = Session.LoggedInUser;
+            if (user == null || user.organizationId == null || user.organizationId == 0)
+                return;
+
+            string rootFolder = FileStorageHelper.GetOrgDataFolder(user.organizationId.Value);
+            if (!Directory.Exists(rootFolder))
+                return;
+
+            var rootItem = new TreeViewItem
+            {
+                Header = System.IO.Path.GetFileName(rootFolder),
+                Tag = rootFolder,
+                IsExpanded = true
+            };
+            PopulateTreeItem(rootItem, rootFolder);
+            fileTree.Items.Add(rootItem);
+        }
+
+        private void PopulateTreeItem(TreeViewItem parent, string dirPath)
+        {
+            foreach (string subDir in Directory.GetDirectories(dirPath))
+            {
+                var dirItem = new TreeViewItem
+                {
+                    Header = System.IO.Path.GetFileName(subDir),
+                    Tag = subDir,
+                    IsExpanded = true
+                };
+                PopulateTreeItem(dirItem, subDir);
+                parent.Items.Add(dirItem);
+            }
+            foreach (string filePath in Directory.GetFiles(dirPath))
+            {
+                parent.Items.Add(new TreeViewItem
+                {
+                    Header = System.IO.Path.GetFileName(filePath),
+                    Tag = filePath
+                });
+            }
+        }
+
+        private void FileTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (e.NewValue is TreeViewItem item && item.Items.Count == 0 && item.Tag is string filePath)
+            {
+                try
+                {
+                    string content = File.ReadAllText(filePath);
+                    notepad.WrittenText = content;
+                }
+                catch { }
+            }
         }
     }
 }

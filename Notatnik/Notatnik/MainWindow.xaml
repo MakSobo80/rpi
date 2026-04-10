@@ -133,6 +133,9 @@
                 </StackPanel>
             </Frame.Content>
         </Frame>
+        <TreeView x:Name="fileTree" Grid.Column="0"
+                  Margin="5,22,5,0" Height="194" VerticalAlignment="Top"
+                  SelectedItemChanged="FileTree_SelectedItemChanged"/>
         <Menu VerticalAlignment="Top" Background="#FFE5E5E5" BorderBrush="DarkGray" Height="18">
             <MenuItem Grid.Column="0" Header="_Plik">
                 <MenuItem Header="Otwórz plik" x:Name="menuOpenFile" Click="OpenFile"/>
