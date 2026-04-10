@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Microsoft.Win32;
 
 namespace Notatnik
 {
@@ -96,16 +95,22 @@ namespace Notatnik
                 return;
             }
 
-            var saveDialog = new SaveFileDialog
+            var user = Session.LoggedInUser;
+            if (user == null || user.organizationId == null)
             {
-                FileName = fileData.Name.Trim(),
-                Title = "Zapisz plik"
-            };
-            if (saveDialog.ShowDialog() == true)
-            {
-                System.IO.File.WriteAllBytes(saveDialog.FileName, fileData.File);
-                MessageBox.Show("Plik został zapisany.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Musisz być zalogowany i należeć do organizacji.", "Błąd",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            string rootFolder = FileStorageHelper.GetOrgDataFolder(user.organizationId.Value);
+            var allFiles = Database.GetFilesForOrganization(user.organizationId.Value);
+            var fileDict = allFiles.ToDictionary(f => f.Id);
+
+            string localPath = FileStorageHelper.ResolveLocalPath(fileData, fileDict, rootFolder);
+            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(localPath)!);
+            System.IO.File.WriteAllBytes(localPath, fileData.File);
+            MessageBox.Show($"Plik zapisany do:\n{localPath}", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Odrzuc(object sender, RoutedEventArgs e)

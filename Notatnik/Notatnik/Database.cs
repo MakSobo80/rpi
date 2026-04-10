@@ -281,5 +281,35 @@ namespace Notatnik
                 }
             }
         }
+
+        /// <summary>
+        /// Adds a folder-marker record (empty file content) and returns the new record's ID,
+        /// or -1 on failure.
+        /// </summary>
+        public static int AddFolderRecord(string name, int authorId, int organizationId, int? parentId = null)
+        {
+            using (var context = new Models.AppDbContext())
+            {
+                try
+                {
+                    string safeName = name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name;
+                    var folder = new Models.Filez
+                    {
+                        Name = safeName,
+                        File = Array.Empty<byte>(),
+                        AuthorId = checked((byte)authorId),
+                        OrganizationId = checked((byte)organizationId),
+                        Parent = parentId.HasValue ? checked((byte?)parentId.Value) : null
+                    };
+                    context.Filezs.Add(folder);
+                    context.SaveChanges();
+                    return folder.Id;
+                }
+                catch
+                {
+                    return -1;
+                }
+            }
+        }
     }
 }
