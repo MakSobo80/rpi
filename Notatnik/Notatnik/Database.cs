@@ -314,5 +314,91 @@ namespace Notatnik
                 }
             }
         }
+
+        /// <summary>
+        /// Inserts a new file record or updates the content of an existing one that has the
+        /// same name, organization, and parent.
+        /// </summary>
+        public static void UpsertFile(string name, byte[] fileContent, int authorId, int organizationId, int? parentId = null)
+        {
+            using (var context = new Models.AppDbContext())
+            {
+                try
+                {
+                    string safeName = TruncateName(name);
+                    byte orgByte = checked((byte)organizationId);
+                    byte? parentByte = parentId.HasValue ? checked((byte?)parentId.Value) : null;
+
+                    var existing = context.Filezs.FirstOrDefault(f =>
+                        f.Name == safeName &&
+                        f.OrganizationId == orgByte &&
+                        f.Parent == parentByte);
+
+                    if (existing != null)
+                    {
+                        existing.File = fileContent;
+                        existing.AuthorId = checked((byte)authorId);
+                    }
+                    else
+                    {
+                        context.Filezs.Add(new Models.Filez
+                        {
+                            Name = safeName,
+                            File = fileContent,
+                            AuthorId = checked((byte)authorId),
+                            OrganizationId = orgByte,
+                            Parent = parentByte
+                        });
+                    }
+                    context.SaveChanges();
+                }
+                catch
+                {
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns the ID of an existing folder record (name + org + parent) or inserts a new
+        /// one and returns its ID. Returns -1 on failure.
+        /// </summary>
+        public static int UpsertFolderRecord(string name, int authorId, int organizationId, int? parentId = null)
+        {
+            using (var context = new Models.AppDbContext())
+            {
+                try
+                {
+                    string safeName = TruncateName(name);
+                    byte orgByte = checked((byte)organizationId);
+                    byte? parentByte = parentId.HasValue ? checked((byte?)parentId.Value) : null;
+
+                    var existing = context.Filezs.FirstOrDefault(f =>
+                        f.Name == safeName &&
+                        f.OrganizationId == orgByte &&
+                        f.Parent == parentByte &&
+                        f.File.Length == 0);
+
+                    if (existing != null)
+                        return existing.Id;
+
+                    var folder = new Models.Filez
+                    {
+                        Name = safeName,
+                        File = Array.Empty<byte>(),
+                        AuthorId = checked((byte)authorId),
+                        OrganizationId = orgByte,
+                        Parent = parentByte
+                    };
+                    context.Filezs.Add(folder);
+                    context.SaveChanges();
+                    return folder.Id;
+                }
+                catch
+                {
+                    return -1;
+                }
+            }
+        }
     }
 }

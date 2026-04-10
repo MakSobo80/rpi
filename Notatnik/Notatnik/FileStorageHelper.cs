@@ -33,13 +33,13 @@ namespace Notatnik
             {
                 string name = Path.GetFileName(filePath);
                 byte[] content = File.ReadAllBytes(filePath);
-                Database.AddFile(name, content, authorId, orgId, parentId);
+                Database.UpsertFile(name, content, authorId, orgId, parentId);
             }
 
             foreach (string subDir in Directory.GetDirectories(dirPath))
             {
                 string dirName = Path.GetFileName(subDir);
-                int folderId = Database.AddFolderRecord(dirName, authorId, orgId, parentId);
+                int folderId = Database.UpsertFolderRecord(dirName, authorId, orgId, parentId);
                 if (folderId >= 0)
                     UploadDirectory(subDir, orgId, authorId, folderId);
             }
