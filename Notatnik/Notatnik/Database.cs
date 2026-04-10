@@ -13,6 +13,9 @@ namespace Notatnik
         private const int MaxNameLength = 10;
         private const byte DefaultOrganizationId = 1;
 
+        private static string TruncateName(string name) =>
+            name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name;
+
         public static void RegisterUser(string username)
         {
             if (string.IsNullOrEmpty(username))
@@ -106,7 +109,7 @@ namespace Notatnik
             {
                 try
                 {
-                    string safeName = name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name;
+                    string safeName = TruncateName(name);
                     var file = new Models.Filez
                     {
                         Name = safeName,
@@ -270,7 +273,7 @@ namespace Notatnik
             {
                 try
                 {
-                    string safeName = name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name;
+                    string safeName = TruncateName(name);
                     var org = new Models.Organization { Name = safeName };
                     context.Organizations.Add(org);
                     context.SaveChanges();
@@ -292,7 +295,7 @@ namespace Notatnik
             {
                 try
                 {
-                    string safeName = name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name;
+                    string safeName = TruncateName(name);
                     var folder = new Models.Filez
                     {
                         Name = safeName,

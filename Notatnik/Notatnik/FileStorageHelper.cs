@@ -81,11 +81,22 @@ namespace Notatnik
             Dictionary<byte, Models.Filez> fileDict,
             string rootFolder)
         {
-            if (file.Parent == null)
+            return ResolveLocalPathInternal(file, fileDict, rootFolder, new HashSet<byte>());
+        }
+
+        private static string ResolveLocalPathInternal(
+            Models.Filez file,
+            Dictionary<byte, Models.Filez> fileDict,
+            string rootFolder,
+            HashSet<byte> visited)
+        {
+            if (file.Parent == null || visited.Contains(file.Id))
                 return Path.Combine(rootFolder, file.Name.Trim());
 
+            visited.Add(file.Id);
+
             if (fileDict.TryGetValue(file.Parent.Value, out var parent))
-                return Path.Combine(ResolveLocalPath(parent, fileDict, rootFolder), file.Name.Trim());
+                return Path.Combine(ResolveLocalPathInternal(parent, fileDict, rootFolder, visited), file.Name.Trim());
 
             // Parent not found — fall back to root
             return Path.Combine(rootFolder, file.Name.Trim());

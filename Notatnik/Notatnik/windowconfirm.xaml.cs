@@ -108,7 +108,9 @@ namespace Notatnik
             var fileDict = allFiles.ToDictionary(f => f.Id);
 
             string localPath = FileStorageHelper.ResolveLocalPath(fileData, fileDict, rootFolder);
-            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(localPath)!);
+            string? dirName = System.IO.Path.GetDirectoryName(localPath);
+            if (dirName != null)
+                System.IO.Directory.CreateDirectory(dirName);
             System.IO.File.WriteAllBytes(localPath, fileData.File);
             MessageBox.Show($"Plik zapisany do:\n{localPath}", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
         }
