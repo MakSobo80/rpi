@@ -75,7 +75,7 @@ namespace Notatnik
             }
 
             var currentUser = Session.LoggedInUser;
-            var dbCurrentUser = currentUser != null ? Database.GetUser(currentUser.Login!) : null;
+            var dbCurrentUser = (currentUser != null && currentUser.Login != null) ? Database.GetUser(currentUser.Login) : null;
             if (dbCurrentUser != null && dbCurrentUser.Id == selected.Id)
             {
                 MessageBox.Show("Nie możesz usunąć samego siebie.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -122,9 +122,16 @@ namespace Notatnik
                 MessageBox.Show("Podaj nazwę organizacji.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            Database.AddOrganization(name);
-            txtNewOrgName.Clear();
-            MessageBox.Show($"Organizacja '{name}' została utworzona.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            bool success = Database.AddOrganization(name);
+            if (success)
+            {
+                txtNewOrgName.Clear();
+                MessageBox.Show($"Organizacja '{name}' została utworzona.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Nie udało się utworzyć organizacji '{name}'.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Powrot_Click(object sender, RoutedEventArgs e)

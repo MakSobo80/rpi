@@ -50,8 +50,8 @@ namespace Notatnik
                 return;
             }
 
-            var files = Database.GetFilesForOrganization(user.organizationId.Value);
-            foreach (var f in files)
+            var fileMetadata = Database.GetFileMetadataForOrganization(user.organizationId.Value);
+            foreach (var f in fileMetadata)
             {
                 var dbAuthor = Database.GetUserById(f.AuthorId);
                 listFiles.Items.Add(new FileItem
@@ -59,7 +59,7 @@ namespace Notatnik
                     Id = f.Id,
                     DisplayName = f.Name.Trim(),
                     AuthorName = dbAuthor?.Username?.Trim() ?? $"id:{f.AuthorId}",
-                    SizeBytes = f.File?.Length ?? 0
+                    SizeBytes = f.SizeBytes
                 });
             }
         }

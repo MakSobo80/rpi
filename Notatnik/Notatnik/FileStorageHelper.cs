@@ -66,7 +66,11 @@ namespace Notatnik
                 }
                 else
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
+                    var dir = Path.GetDirectoryName(localPath);
+                    if (!string.IsNullOrEmpty(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
                     File.WriteAllBytes(localPath, file.File);
                 }
             }

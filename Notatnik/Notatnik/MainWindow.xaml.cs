@@ -70,9 +70,17 @@ namespace Notatnik
                 return;
             }
 
-            string folder = FileStorageHelper.GetOrgDataFolder(user.organizationId.Value);
-            FileStorageHelper.UploadFolderToDatabase(user.organizationId.Value, dbUser.Id);
-            MessageBox.Show($"Pliki z folderu '{folder}' zostały wysłane do bazy danych.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                string folder = FileStorageHelper.GetOrgDataFolder(user.organizationId.Value);
+                FileStorageHelper.UploadFolderToDatabase(user.organizationId.Value, dbUser.Id);
+                MessageBox.Show($"Pliki z folderu '{folder}' zostały wysłane do bazy danych.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas wysyłania plików: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Diagnostics.Debug.WriteLine($"SendFile error: {ex}");
+            }
         }
 
         private void GetFile(object sender, RoutedEventArgs e)
@@ -89,10 +97,18 @@ namespace Notatnik
                 return;
             }
 
-            string folder = FileStorageHelper.GetOrgDataFolder(user.organizationId.Value);
-            FileStorageHelper.DownloadDatabaseToFolder(user.organizationId.Value);
-            RefreshFileTree();
-            MessageBox.Show($"Pliki zostały pobrane do folderu '{folder}'.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                string folder = FileStorageHelper.GetOrgDataFolder(user.organizationId.Value);
+                FileStorageHelper.DownloadDatabaseToFolder(user.organizationId.Value);
+                RefreshFileTree();
+                MessageBox.Show($"Pliki zostały pobrane do folderu '{folder}'.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd podczas pobierania plików: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Diagnostics.Debug.WriteLine($"GetFile error: {ex}");
+            }
         }
         private void OpenAdmin(object sender, RoutedEventArgs e)
         {
@@ -223,12 +239,19 @@ namespace Notatnik
         {
             if (e.NewValue is TreeViewItem item && item.Items.Count == 0 && item.Tag is string filePath)
             {
-                try
+                if (File.Exists(filePath))
                 {
-                    string content = File.ReadAllText(filePath);
-                    notepad.WrittenText = content;
+                    try
+                    {
+                        string content = File.ReadAllText(filePath);
+                        notepad.WrittenText = content;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Nie można odczytać pliku: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                        System.Diagnostics.Debug.WriteLine($"FileTree_SelectedItemChanged error: {ex}");
+                    }
                 }
-                catch { }
             }
         }
     }

@@ -10,7 +10,11 @@ namespace Notatnik
 {
     internal static class Database
     {
-        private const int MaxNameLength = 10;
+        // Maximum length for file/folder/organization names. Set to 255 to match typical DB varchar limits
+        // and avoid unintended truncation. Names exceeding this length will be truncated by TruncateName.
+        private const int MaxNameLength = 255;
+
+        // Default organization ID for users not assigned to any organization.
         private const byte DefaultOrganizationId = 1;
 
         private static string TruncateName(string name) =>
@@ -145,6 +149,28 @@ namespace Notatnik
             }
         }
 
+        /// <summary>
+        /// Returns metadata-only file records (without blob data) for the given organization.
+        /// Only includes actual files (excludes folder records with empty content).
+        /// </summary>
+        public static List<(int Id, string Name, byte AuthorId, int SizeBytes)> GetFileMetadataForOrganization(int organizationId)
+        {
+            using (var context = new Models.AppDbContext())
+            {
+                try
+                {
+                    return context.Filezs
+                        .Where(f => f.OrganizationId == organizationId && f.File != null && f.File.Length > 0)
+                        .Select(f => new ValueTuple<int, string, byte, int>(f.Id, f.Name, f.AuthorId, f.File != null ? f.File.Length : 0))
+                        .ToList();
+                }
+                catch
+                {
+                    return new List<(int, string, byte, int)>();
+                }
+            }
+        }
+
         public static Models.Filez? GetFileById(int id)
         {
             using (var context = new Models.AppDbContext())
@@ -267,7 +293,7 @@ namespace Notatnik
             }
         }
 
-        public static void AddOrganization(string name)
+        public static bool AddOrganization(string name)
         {
             using (var context = new Models.AppDbContext())
             {
@@ -277,10 +303,11 @@ namespace Notatnik
                     var org = new Models.Organization { Name = safeName };
                     context.Organizations.Add(org);
                     context.SaveChanges();
+                    return true;
                 }
                 catch
                 {
-                    return;
+                    return false;
                 }
             }
         }
@@ -377,6 +404,7 @@ namespace Notatnik
                         f.Name == safeName &&
                         f.OrganizationId == orgByte &&
                         f.Parent == parentByte &&
+                        f.File != null &&
                         f.File.Length == 0);
 
                     if (existing != null)
