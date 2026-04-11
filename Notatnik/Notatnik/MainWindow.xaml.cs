@@ -215,6 +215,7 @@ namespace Notatnik
                     Tag = subDir,
                     IsExpanded = true
                 };
+                dirItem.ContextMenu = BuildFolderContextMenu(dirItem);
                 PopulateTreeItem(dirItem, subDir);
                 if (parent == null) fileTree.Items.Add(dirItem);
                 else parent.Items.Add(dirItem);
@@ -226,9 +227,131 @@ namespace Notatnik
                     Header = System.IO.Path.GetFileName(filePath),
                     Tag = filePath
                 };
+                fileItem.ContextMenu = BuildFileContextMenu(fileItem);
                 if (parent == null) fileTree.Items.Add(fileItem);
                 else parent.Items.Add(fileItem);
             }
+        }
+
+        private ContextMenu BuildFolderContextMenu(TreeViewItem item)
+        {
+            var menu = new ContextMenu();
+
+            var addFile = new MenuItem { Header = "Dodaj plik" };
+            addFile.Click += (s, e) =>
+            {
+                if (item.Tag is not string folderPath) return;
+                var dlg = new Microsoft.Win32.OpenFileDialog { Title = "Wybierz plik do dodania" };
+                if (dlg.ShowDialog() != true) return;
+                string dest = System.IO.Path.Combine(folderPath, System.IO.Path.GetFileName(dlg.FileName));
+                try
+                {
+                    File.Copy(dlg.FileName, dest, overwrite: true);
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można skopiować pliku: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            var rename = new MenuItem { Header = "Zmień nazwę" };
+            rename.Click += (s, e) =>
+            {
+                if (item.Tag is not string folderPath) return;
+                string currentName = System.IO.Path.GetFileName(folderPath);
+                var dlg = new InputDialog("Nowa nazwa folderu:", currentName) { Owner = this };
+                if (dlg.ShowDialog() != true) return;
+                string newName = dlg.InputText.Trim();
+                if (string.IsNullOrEmpty(newName) || newName == currentName) return;
+                string newPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(folderPath)!, newName);
+                try
+                {
+                    Directory.Move(folderPath, newPath);
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można zmienić nazwy folderu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            var delete = new MenuItem { Header = "Usuń folder" };
+            delete.Click += (s, e) =>
+            {
+                if (item.Tag is not string folderPath) return;
+                string name = System.IO.Path.GetFileName(folderPath);
+                var result = MessageBox.Show(
+                    $"Czy na pewno chcesz usunąć folder '{name}' wraz z całą jego zawartością?",
+                    "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result != MessageBoxResult.Yes) return;
+                try
+                {
+                    Directory.Delete(folderPath, recursive: true);
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można usunąć folderu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            menu.Items.Add(addFile);
+            menu.Items.Add(rename);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(delete);
+            return menu;
+        }
+
+        private ContextMenu BuildFileContextMenu(TreeViewItem item)
+        {
+            var menu = new ContextMenu();
+
+            var rename = new MenuItem { Header = "Zmień nazwę" };
+            rename.Click += (s, e) =>
+            {
+                if (item.Tag is not string filePath) return;
+                string currentName = System.IO.Path.GetFileName(filePath);
+                var dlg = new InputDialog("Nowa nazwa pliku:", currentName) { Owner = this };
+                if (dlg.ShowDialog() != true) return;
+                string newName = dlg.InputText.Trim();
+                if (string.IsNullOrEmpty(newName) || newName == currentName) return;
+                string newPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePath)!, newName);
+                try
+                {
+                    File.Move(filePath, newPath);
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można zmienić nazwy pliku: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            var delete = new MenuItem { Header = "Usuń plik" };
+            delete.Click += (s, e) =>
+            {
+                if (item.Tag is not string filePath) return;
+                string name = System.IO.Path.GetFileName(filePath);
+                var result = MessageBox.Show(
+                    $"Czy na pewno chcesz usunąć plik '{name}'?",
+                    "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result != MessageBoxResult.Yes) return;
+                try
+                {
+                    File.Delete(filePath);
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można usunąć pliku: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            menu.Items.Add(rename);
+            menu.Items.Add(new Separator());
+            menu.Items.Add(delete);
+            return menu;
         }
 
         private void FileTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

@@ -1,0 +1,23 @@
+<Window x:Class="Notatnik.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Wprowadź wartość" Height="140" Width="380"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Background="DarkGray" ShowInTaskbar="False">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="labelPrompt" Grid.Row="0" Content="Nowa nazwa:" Foreground="White"/>
+        <TextBox x:Name="textInput" Grid.Row="1" Margin="0,4,0,10"
+                 Height="26" VerticalContentAlignment="Center"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnOk" Content="OK" Width="80" Height="28" Margin="0,0,8,0"
+                    Background="#FFE5E5E5" BorderBrush="DarkGray" Click="BtnOk_Click" IsDefault="True"/>
+            <Button Content="Anuluj" Width="80" Height="28"
+                    Background="#FFE5E5E5" BorderBrush="DarkGray" Click="BtnCancel_Click" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
