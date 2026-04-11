@@ -62,20 +62,15 @@ namespace Notatnik
             string rootFolder = GetOrgDataFolder(orgId);
             var allRecords = Database.GetFilesForOrganization(orgId);
 
-            // Group records by their parent ID so we can efficiently look up children.
-            var childrenOf = allRecords
-                .GroupBy(f => f.Parent)
-                .ToDictionary(g => g.Key, g => g.ToList());
+            // Group records by their parent ID. ILookup supports null keys (root records).
+            var childrenOf = allRecords.ToLookup(f => f.Parent);
 
             // BFS queue: each entry is (record, local path of the parent directory).
             var queue = new Queue<(Models.Filez record, string parentPath)>();
 
             // Seed with root-level items — those that have no parent.
-            if (childrenOf.TryGetValue(null, out var rootItems))
-            {
-                foreach (var item in rootItems)
-                    queue.Enqueue((item, rootFolder));
-            }
+            foreach (var item in childrenOf[null])
+                queue.Enqueue((item, rootFolder));
 
             while (queue.Count > 0)
             {
@@ -86,11 +81,8 @@ namespace Notatnik
                 {
                     // Folder record — create the directory and enqueue its children.
                     Directory.CreateDirectory(localPath);
-                    if (childrenOf.TryGetValue(record.Id, out var children))
-                    {
-                        foreach (var child in children)
-                            queue.Enqueue((child, localPath));
-                    }
+                    foreach (var child in childrenOf[(byte?)record.Id])
+                        queue.Enqueue((child, localPath));
                 }
                 else
                 {
