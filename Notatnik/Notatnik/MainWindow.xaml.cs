@@ -202,7 +202,53 @@ namespace Notatnik
             if (!Directory.Exists(rootFolder))
                 return;
 
+            fileTree.ContextMenu = BuildRootContextMenu(rootFolder);
             PopulateTreeItem(null, rootFolder);
+        }
+
+        private ContextMenu BuildRootContextMenu(string rootFolder)
+        {
+            var menu = new ContextMenu();
+
+            var createFile = new MenuItem { Header = "Utwórz plik" };
+            createFile.Click += (s, e) =>
+            {
+                var dlg = new InputDialog("Nazwa nowego pliku:", "") { Owner = this };
+                if (dlg.ShowDialog() != true) return;
+                string newName = dlg.InputText.Trim();
+                if (string.IsNullOrEmpty(newName)) return;
+                string newFilePath = System.IO.Path.Combine(rootFolder, newName);
+                try
+                {
+                    File.WriteAllBytes(newFilePath, Array.Empty<byte>());
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można utworzyć pliku: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            var addFile = new MenuItem { Header = "Dodaj plik" };
+            addFile.Click += (s, e) =>
+            {
+                var dlg = new Microsoft.Win32.OpenFileDialog { Title = "Wybierz plik do dodania" };
+                if (dlg.ShowDialog() != true) return;
+                string dest = System.IO.Path.Combine(rootFolder, System.IO.Path.GetFileName(dlg.FileName));
+                try
+                {
+                    File.Copy(dlg.FileName, dest, overwrite: true);
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można skopiować pliku: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            menu.Items.Add(createFile);
+            menu.Items.Add(addFile);
+            return menu;
         }
 
         private void PopulateTreeItem(TreeViewItem? parent, string dirPath)
