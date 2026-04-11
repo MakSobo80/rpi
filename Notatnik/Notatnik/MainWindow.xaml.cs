@@ -296,6 +296,27 @@ namespace Notatnik
                 }
             };
 
+            var createFile = new MenuItem { Header = "Utwórz plik" };
+            createFile.Click += (s, e) =>
+            {
+                if (item.Tag is not string folderPath) return;
+                var dlg = new InputDialog("Nazwa nowego pliku:", "") { Owner = this };
+                if (dlg.ShowDialog() != true) return;
+                string newName = dlg.InputText.Trim();
+                if (string.IsNullOrEmpty(newName)) return;
+                string newFilePath = System.IO.Path.Combine(folderPath, newName);
+                try
+                {
+                    File.WriteAllBytes(newFilePath, Array.Empty<byte>());
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można utworzyć pliku: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            menu.Items.Add(createFile);
             menu.Items.Add(addFile);
             menu.Items.Add(rename);
             menu.Items.Add(new Separator());
