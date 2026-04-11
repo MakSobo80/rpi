@@ -202,17 +202,10 @@ namespace Notatnik
             if (!Directory.Exists(rootFolder))
                 return;
 
-            var rootItem = new TreeViewItem
-            {
-                Header = System.IO.Path.GetFileName(rootFolder),
-                Tag = rootFolder,
-                IsExpanded = true
-            };
-            PopulateTreeItem(rootItem, rootFolder);
-            fileTree.Items.Add(rootItem);
+            PopulateTreeItem(null, rootFolder);
         }
 
-        private void PopulateTreeItem(TreeViewItem parent, string dirPath)
+        private void PopulateTreeItem(TreeViewItem? parent, string dirPath)
         {
             foreach (string subDir in Directory.GetDirectories(dirPath))
             {
@@ -223,15 +216,18 @@ namespace Notatnik
                     IsExpanded = true
                 };
                 PopulateTreeItem(dirItem, subDir);
-                parent.Items.Add(dirItem);
+                if (parent == null) fileTree.Items.Add(dirItem);
+                else parent.Items.Add(dirItem);
             }
             foreach (string filePath in Directory.GetFiles(dirPath))
             {
-                parent.Items.Add(new TreeViewItem
+                var fileItem = new TreeViewItem
                 {
                     Header = System.IO.Path.GetFileName(filePath),
                     Tag = filePath
-                });
+                };
+                if (parent == null) fileTree.Items.Add(fileItem);
+                else parent.Items.Add(fileItem);
             }
         }
 
