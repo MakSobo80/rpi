@@ -18,60 +18,85 @@ namespace Notatnik
         }
 
         /// <summary>
-        /// Recursively uploads all files from the local org folder to the database,
-        /// preserving the directory structure via the parent column.
+        /// Uploads the contents of the local org folder to the database using a BFS walk.
+        /// For each directory level: files are upserted first, then subdirectories are upserted
+        /// as folder records (with their parent set to the containing folder's database ID),
+        /// and their contents are enqueued for the next level.
+        /// Existing records (matched by name + org + parent) are updated; new ones are inserted.
         /// </summary>
         public static void UploadFolderToDatabase(int orgId, int authorId)
         {
             string rootFolder = GetOrgDataFolder(orgId);
-            UploadDirectory(rootFolder, orgId, authorId, null);
-        }
+            var queue = new Queue<(string dirPath, int? parentId)>();
+            queue.Enqueue((rootFolder, null));
 
-        private static void UploadDirectory(string dirPath, int orgId, int authorId, int? parentId)
-        {
-            foreach (string filePath in Directory.GetFiles(dirPath))
+            while (queue.Count > 0)
             {
-                string name = Path.GetFileName(filePath);
-                byte[] content = File.ReadAllBytes(filePath);
-                Database.UpsertFile(name, content, authorId, orgId, parentId);
-            }
+                var (dirPath, parentId) = queue.Dequeue();
 
-            foreach (string subDir in Directory.GetDirectories(dirPath))
-            {
-                string dirName = Path.GetFileName(subDir);
-                int folderId = Database.UpsertFolderRecord(dirName, authorId, orgId, parentId);
-                if (folderId >= 0)
-                    UploadDirectory(subDir, orgId, authorId, folderId);
+                foreach (string filePath in Directory.GetFiles(dirPath))
+                {
+                    string name = Path.GetFileName(filePath);
+                    byte[] content = File.ReadAllBytes(filePath);
+                    Database.UpsertFile(name, content, authorId, orgId, parentId);
+                }
+
+                foreach (string subDir in Directory.GetDirectories(dirPath))
+                {
+                    string dirName = Path.GetFileName(subDir);
+                    int folderId = Database.UpsertFolderRecord(dirName, authorId, orgId, parentId);
+                    if (folderId >= 0)
+                        queue.Enqueue((subDir, folderId));
+                }
             }
         }
 
         /// <summary>
-        /// Downloads all files for the organization from the database to the local AppData folder,
-        /// reconstructing the directory hierarchy from the parent column.
+        /// Downloads all files for the organization from the database to the local AppData folder
+        /// using a BFS walk of the parent hierarchy: root items (no parent) are written first,
+        /// then their children, level by level, preserving the directory structure stored in the
+        /// parent column.
         /// </summary>
         public static void DownloadDatabaseToFolder(int orgId)
         {
             string rootFolder = GetOrgDataFolder(orgId);
-            var allFiles = Database.GetFilesForOrganization(orgId);
-            var fileDict = allFiles.ToDictionary(f => f.Id);
+            var allRecords = Database.GetFilesForOrganization(orgId);
 
-            foreach (var file in allFiles)
+            // Group records by their parent ID so we can efficiently look up children.
+            var childrenOf = allRecords
+                .GroupBy(f => f.Parent)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            // BFS queue: each entry is (record, local path of the parent directory).
+            var queue = new Queue<(Models.Filez record, string parentPath)>();
+
+            // Seed with root-level items — those that have no parent.
+            if (childrenOf.TryGetValue(null, out var rootItems))
             {
-                string localPath = ResolveLocalPath(file, fileDict, rootFolder);
+                foreach (var item in rootItems)
+                    queue.Enqueue((item, rootFolder));
+            }
 
-                if (file.File == null || file.File.Length == 0)
+            while (queue.Count > 0)
+            {
+                var (record, parentPath) = queue.Dequeue();
+                string localPath = Path.Combine(parentPath, record.Name.Trim());
+
+                if (record.File == null || record.File.Length == 0)
                 {
-                    // Folder record — ensure the directory exists
+                    // Folder record — create the directory and enqueue its children.
                     Directory.CreateDirectory(localPath);
+                    if (childrenOf.TryGetValue(record.Id, out var children))
+                    {
+                        foreach (var child in children)
+                            queue.Enqueue((child, localPath));
+                    }
                 }
                 else
                 {
-                    var dir = Path.GetDirectoryName(localPath);
-                    if (!string.IsNullOrEmpty(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
-                    File.WriteAllBytes(localPath, file.File);
+                    // File record — ensure parent directory exists and write the file.
+                    Directory.CreateDirectory(parentPath);
+                    File.WriteAllBytes(localPath, record.File);
                 }
             }
         }
