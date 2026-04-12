@@ -102,6 +102,17 @@ namespace Notatnik
             }
 
             bool newStatus = !selected.IsManager;
+            if (!newStatus)
+            {
+                var currentUser = Session.LoggedInUser;
+                var dbCurrentUser = (currentUser != null && currentUser.Login != null) ? Database.GetUser(currentUser.Login) : null;
+                if (dbCurrentUser != null && dbCurrentUser.Id == selected.Id)
+                {
+                    MessageBox.Show("Nie możesz odebrać samemu sobie uprawnień managera.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+            }
+
             string action = newStatus ? "nadać uprawnienia managera" : "odebrać uprawnienia managera";
             var result = MessageBox.Show(
                 $"Czy na pewno chcesz {action} użytkownikowi '{(selected.DisplayText.Split(new[]{' '}, 2) is { Length: > 0 } parts ? parts[0] : selected.DisplayText)}'?",

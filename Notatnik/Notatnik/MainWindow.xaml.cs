@@ -276,6 +276,26 @@ namespace Notatnik
                 }
             };
 
+            var createFolder = new MenuItem { Header = "Utwórz folder" };
+            createFolder.Click += (s, e) =>
+            {
+                var dlg = new InputDialog("Nazwa nowego folderu:", "") { Owner = this };
+                if (dlg.ShowDialog() != true) return;
+                string newName = dlg.InputText.Trim();
+                if (string.IsNullOrEmpty(newName)) return;
+                string newFolderPath = System.IO.Path.Combine(rootFolder, newName);
+                try
+                {
+                    Directory.CreateDirectory(newFolderPath);
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można utworzyć folderu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            menu.Items.Add(createFolder);
             menu.Items.Add(createFile);
             menu.Items.Add(addFile);
             return menu;
@@ -394,6 +414,27 @@ namespace Notatnik
                 }
             };
 
+            var createFolder = new MenuItem { Header = "Utwórz folder" };
+            createFolder.Click += (s, e) =>
+            {
+                if (item.Tag is not string folderPath) return;
+                var dlg = new InputDialog("Nazwa nowego folderu:", "") { Owner = this };
+                if (dlg.ShowDialog() != true) return;
+                string newName = dlg.InputText.Trim();
+                if (string.IsNullOrEmpty(newName)) return;
+                string newFolderPath = System.IO.Path.Combine(folderPath, newName);
+                try
+                {
+                    Directory.CreateDirectory(newFolderPath);
+                    RefreshFileTree();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nie można utworzyć folderu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            menu.Items.Add(createFolder);
             menu.Items.Add(createFile);
             menu.Items.Add(addFile);
             menu.Items.Add(rename);
