@@ -81,7 +81,12 @@ namespace Notatnik
 
                 if (record.File == null || record.File.Length == 0)
                 {
-                    // Folder record — create the directory and enqueue its children.
+                    // Folder record — DB wins: if a file exists at this path, remove it first.
+                    if (File.Exists(localPath))
+                    {
+                        overwritten.Add(localPath);
+                        File.Delete(localPath);
+                    }
                     Directory.CreateDirectory(localPath);
                     foreach (var child in childrenOf[(byte?)record.Id])
                         queue.Enqueue((child, localPath));
@@ -89,7 +94,13 @@ namespace Notatnik
                 else
                 {
                     // File record — track conflicts, then always overwrite with DB version.
-                    if (File.Exists(localPath))
+                    // If a directory exists at this path, remove it first (DB wins).
+                    if (Directory.Exists(localPath))
+                    {
+                        overwritten.Add(localPath);
+                        Directory.Delete(localPath, recursive: true);
+                    }
+                    else if (File.Exists(localPath))
                     {
                         byte[] localBytes = File.ReadAllBytes(localPath);
                         if (!localBytes.SequenceEqual(record.File))

@@ -216,6 +216,8 @@ namespace Notatnik
             PopulateTreeItem(null, rootFolder);
         }
 
+        private void RefreshTree_Click(object sender, RoutedEventArgs e) => RefreshFileTree();
+
         private ContextMenu BuildRootContextMenu(string rootFolder)
         {
             var menu = new ContextMenu();
