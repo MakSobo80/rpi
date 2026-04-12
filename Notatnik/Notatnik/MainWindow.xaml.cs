@@ -18,6 +18,7 @@ namespace Notatnik
     public partial class MainWindow : Window
     {
         Notepad notepad;
+        private string? _currentFilePath;
 
         public MainWindow()
         {
@@ -28,6 +29,19 @@ namespace Notatnik
                 notepad.WrittenText = TextContent.Text;
             };
             Loaded += (s, ev) => RefreshFileTree();
+        }
+
+        private void SaveCurrentFile()
+        {
+            if (_currentFilePath == null) return;
+            try
+            {
+                File.WriteAllText(_currentFilePath, notepad.WrittenText);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"SaveCurrentFile error: {ex}");
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -52,6 +66,8 @@ namespace Notatnik
 
         private void SendFile(object sender, RoutedEventArgs e)
         {
+            SaveCurrentFile();
+
             var user = Session.LoggedInUser;
             if (user == null)
             {
@@ -445,7 +461,9 @@ namespace Notatnik
                 {
                     try
                     {
+                        SaveCurrentFile();
                         string content = File.ReadAllText(filePath);
+                        _currentFilePath = filePath;
                         notepad.WrittenText = content;
                     }
                     catch (Exception ex)
