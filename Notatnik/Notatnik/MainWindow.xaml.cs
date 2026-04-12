@@ -100,9 +100,19 @@ namespace Notatnik
             try
             {
                 string folder = FileStorageHelper.GetOrgDataFolder(user.organizationId.Value);
-                FileStorageHelper.DownloadDatabaseToFolder(user.organizationId.Value);
+                var overwritten = FileStorageHelper.DownloadDatabaseToFolder(user.organizationId.Value);
                 RefreshFileTree();
-                MessageBox.Show($"Pliki zostały pobrane do folderu '{folder}'.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (overwritten.Count > 0)
+                {
+                    string fileList = string.Join("\n", overwritten.Select(f => "  • " + System.IO.Path.GetFileName(f)));
+                    MessageBox.Show(
+                        $"Pliki zostały pobrane do folderu '{folder}'.\n\nNastępujące lokalne pliki zostały zastąpione wersją z bazy danych:\n{fileList}",
+                        "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"Pliki zostały pobrane do folderu '{folder}'.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
             catch (Exception ex)
             {
@@ -217,6 +227,8 @@ namespace Notatnik
                 if (dlg.ShowDialog() != true) return;
                 string newName = dlg.InputText.Trim();
                 if (string.IsNullOrEmpty(newName)) return;
+                if (string.IsNullOrEmpty(System.IO.Path.GetExtension(newName)))
+                    newName += ".md";
                 string newFilePath = System.IO.Path.Combine(rootFolder, newName);
                 try
                 {
@@ -350,6 +362,8 @@ namespace Notatnik
                 if (dlg.ShowDialog() != true) return;
                 string newName = dlg.InputText.Trim();
                 if (string.IsNullOrEmpty(newName)) return;
+                if (string.IsNullOrEmpty(System.IO.Path.GetExtension(newName)))
+                    newName += ".md";
                 string newFilePath = System.IO.Path.Combine(folderPath, newName);
                 try
                 {

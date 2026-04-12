@@ -57,7 +57,7 @@ namespace Notatnik
         /// then their children, level by level, preserving the directory structure stored in the
         /// parent column.
         /// </summary>
-        public static void DownloadDatabaseToFolder(int orgId)
+        public static IReadOnlyList<string> DownloadDatabaseToFolder(int orgId)
         {
             string rootFolder = GetOrgDataFolder(orgId);
             var allRecords = Database.GetFilesForOrganization(orgId);
@@ -71,6 +71,8 @@ namespace Notatnik
             // Seed with root-level items — those that have no parent.
             foreach (var item in childrenOf[null])
                 queue.Enqueue((item, rootFolder));
+
+            var overwritten = new List<string>();
 
             while (queue.Count > 0)
             {
@@ -86,11 +88,19 @@ namespace Notatnik
                 }
                 else
                 {
-                    // File record — ensure parent directory exists and write the file.
+                    // File record — track conflicts, then always overwrite with DB version.
+                    if (File.Exists(localPath))
+                    {
+                        byte[] localBytes = File.ReadAllBytes(localPath);
+                        if (!localBytes.SequenceEqual(record.File))
+                            overwritten.Add(localPath);
+                    }
                     Directory.CreateDirectory(parentPath);
                     File.WriteAllBytes(localPath, record.File);
                 }
             }
+
+            return overwritten;
         }
 
         /// <summary>
