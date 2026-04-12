@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Notatnik"
         mc:Ignorable="d"
         Background="DarkGray"
-        Title="WindowAdmin" Height="200" Width="400">
+        Title="WindowAdmin" Height="200" Width="400" Closed="Window_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

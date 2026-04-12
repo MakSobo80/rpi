@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Notatnik"
         mc:Ignorable="d"
         Background="DarkGray"
-        Title="Zarządzanie organizacją" Height="520" Width="600">
+        Title="Zarządzanie organizacją" Height="520" Width="600" Closed="Window_Closed">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
