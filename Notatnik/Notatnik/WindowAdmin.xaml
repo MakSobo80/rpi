@@ -11,7 +11,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Content="Notatnik" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,60"  VerticalAlignment="bottom"  Width="124" Height="50" Click="Notat_guzik"/>
         <Button Grid.Column="1" Content="Organizacja" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,60"  VerticalAlignment="bottom"  Width="124" Height="50" Click="Org_guzik"/>

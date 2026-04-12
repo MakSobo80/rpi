@@ -138,7 +138,7 @@
                   SelectedItemChanged="FileTree_SelectedItemChanged"/>
         <Button Grid.Column="0" Content="⟳" ToolTip="Odśwież drzewo plików"
                 HorizontalAlignment="Right" VerticalAlignment="Top"
-                Margin="0,4,5,0" Width="18" Height="16" FontSize="10"
+                Margin="0,225,5,0" Width="18" Height="16" FontSize="10"
                 Padding="0" Click="RefreshTree_Click"/>
         <Menu VerticalAlignment="Top" Background="#FFE5E5E5" BorderBrush="DarkGray" Height="18">
             <MenuItem Grid.Column="0" Header="_Plik">
