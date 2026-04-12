@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Notatnik"
         mc:Ignorable="d"
         Background="DarkGray"
-        Title="Zarządzanie organizacją" Height="480" Width="600">
+        Title="Zarządzanie organizacją" Height="520" Width="600">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -22,12 +22,22 @@
             <Label x:Name="labelOrgName" Content="—" Foreground="White"/>
         </StackPanel>
 
-        <!-- New org row (visible for managers) -->
-        <StackPanel Grid.Row="1" x:Name="panelNowOrg" Orientation="Horizontal" Margin="0,0,0,8" Visibility="Collapsed">
-            <Label Content="Nowa organizacja:" Foreground="White"/>
-            <TextBox x:Name="txtNewOrgName" Width="120" Margin="5,0,0,0"/>
-            <Button Content="Utwórz" Width="70" Margin="5,0,0,0" Click="UtworzOrg_Click"
-                    Background="#FFE5E5E5" BorderBrush="DarkGray"/>
+        <!-- Manager-only rows (rename + create new org) -->
+        <StackPanel Grid.Row="1" x:Name="panelManagerRows" Visibility="Collapsed" Margin="0,0,0,8">
+            <!-- Rename org -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                <Label Content="Zmień nazwę:" Foreground="White" Width="110"/>
+                <TextBox x:Name="txtRenameOrg" Width="120" Margin="5,0,0,0"/>
+                <Button Content="Zmień" Width="60" Margin="5,0,0,0" Click="ZmienNazweOrg_Click"
+                        Background="#FFE5E5E5" BorderBrush="DarkGray"/>
+            </StackPanel>
+            <!-- New org -->
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Nowa organizacja:" Foreground="White" Width="110"/>
+                <TextBox x:Name="txtNewOrgName" Width="120" Margin="5,0,0,0"/>
+                <Button Content="Utwórz" Width="70" Margin="5,0,0,0" Click="UtworzOrg_Click"
+                        Background="#FFE5E5E5" BorderBrush="DarkGray"/>
+            </StackPanel>
         </StackPanel>
 
         <!-- Members list -->
@@ -38,6 +48,8 @@
         <!-- Manager action buttons -->
         <StackPanel Grid.Row="3" x:Name="panelManagerButtons" Orientation="Horizontal"
                     HorizontalAlignment="Center" Margin="0,0,0,8" Visibility="Collapsed">
+            <Button Content="Dodaj użytkownika" Width="150" Height="40" Margin="5,0"
+                    Background="#FFE5E5E5" BorderBrush="DarkGray" Click="DodajUzytkownika_Click"/>
             <Button Content="Usuń z organizacji" Width="140" Height="40" Margin="5,0"
                     Background="#FFE5E5E5" BorderBrush="DarkGray" Click="UsunUzytkownika_Click"/>
             <Button Content="Zmień status managera" Width="160" Height="40" Margin="5,0"

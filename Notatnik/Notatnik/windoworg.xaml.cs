@@ -63,7 +63,7 @@ namespace Notatnik
 
             bool isManager = user.isManager == true;
             panelManagerButtons.Visibility = isManager ? Visibility.Visible : Visibility.Collapsed;
-            panelNowOrg.Visibility = isManager ? Visibility.Visible : Visibility.Collapsed;
+            panelManagerRows.Visibility = isManager ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void UsunUzytkownika_Click(object sender, RoutedEventArgs e)
@@ -111,6 +111,67 @@ namespace Notatnik
             {
                 Database.SetUserManager(selected.Id, newStatus);
                 OdswiezWidok();
+            }
+        }
+
+        private void DodajUzytkownika_Click(object sender, RoutedEventArgs e)
+        {
+            var currentUser = Session.LoggedInUser;
+            if (currentUser == null || currentUser.organizationId == null)
+                return;
+
+            var dlg = new InputDialog("Nazwa użytkownika do dodania:", "") { Owner = this };
+            if (dlg.ShowDialog() != true) return;
+
+            string username = dlg.InputText.Trim();
+            if (string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("Nie podano nazwy użytkownika.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int result = Database.AddUserToOrganization(username, currentUser.organizationId.Value);
+            switch (result)
+            {
+                case 0:
+                    MessageBox.Show($"Użytkownik '{username}' został dodany do organizacji.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                    OdswiezWidok();
+                    break;
+                case 1:
+                    MessageBox.Show($"Użytkownik '{username}' nie istnieje w bazie danych.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+                case 2:
+                    MessageBox.Show($"Użytkownik '{username}' należy już do innej organizacji.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    break;
+                default:
+                    MessageBox.Show("Wystąpił nieoczekiwany błąd.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+            }
+        }
+
+        private void ZmienNazweOrg_Click(object sender, RoutedEventArgs e)
+        {
+            var currentUser = Session.LoggedInUser;
+            if (currentUser == null || currentUser.organizationId == null)
+                return;
+
+            string newName = txtRenameOrg.Text.Trim();
+            if (string.IsNullOrEmpty(newName))
+            {
+                MessageBox.Show("Podaj nową nazwę organizacji.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            bool success = Database.RenameOrganization(currentUser.organizationId.Value, newName);
+            if (success)
+            {
+                txtRenameOrg.Clear();
+                OdswiezWidok();
+                MessageBox.Show($"Nazwa organizacji została zmieniona na '{newName}'.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Nie udało się zmienić nazwy organizacji.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -293,6 +293,56 @@ namespace Notatnik
             }
         }
 
+        /// <summary>
+        /// Assigns an existing database user to the given organization.
+        /// Returns 0 on success, 1 if the user is not found, 2 if the user already belongs to
+        /// a real organization (OrganizationId != DefaultOrganizationId).
+        /// </summary>
+        public static int AddUserToOrganization(string username, int organizationId)
+        {
+            using (var context = new Models.AppDbContext())
+            {
+                try
+                {
+                    var user = context.Users.FirstOrDefault(u => u.Username == username);
+                    if (user == null)
+                        return 1;
+                    if (user.OrganizationId != DefaultOrganizationId)
+                        return 2;
+                    user.OrganizationId = checked((byte)organizationId);
+                    context.SaveChanges();
+                    return 0;
+                }
+                catch
+                {
+                    return -1;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Renames the organization with the given ID. Returns true on success.
+        /// </summary>
+        public static bool RenameOrganization(int organizationId, string newName)
+        {
+            using (var context = new Models.AppDbContext())
+            {
+                try
+                {
+                    var org = context.Organizations.FirstOrDefault(o => o.Id == organizationId);
+                    if (org == null)
+                        return false;
+                    org.Name = TruncateName(newName);
+                    context.SaveChanges();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
         public static bool AddOrganization(string name)
         {
             using (var context = new Models.AppDbContext())
