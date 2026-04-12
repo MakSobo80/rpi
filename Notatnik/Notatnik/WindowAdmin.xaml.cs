@@ -39,13 +39,5 @@ namespace Notatnik
 
             this.Close();
         }
-
-        private void Zatw_guzik(object sender, RoutedEventArgs e)
-        {
-            var confirmWindow = new windowconfirm();
-            confirmWindow.Show();
-
-            this.Close();
-        }
     }
 }

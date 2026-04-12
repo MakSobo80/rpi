@@ -175,26 +175,6 @@ namespace Notatnik
             }
         }
 
-        private void UtworzOrg_Click(object sender, RoutedEventArgs e)
-        {
-            string name = txtNewOrgName.Text.Trim();
-            if (string.IsNullOrEmpty(name))
-            {
-                MessageBox.Show("Podaj nazwę organizacji.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            bool success = Database.AddOrganization(name);
-            if (success)
-            {
-                txtNewOrgName.Clear();
-                MessageBox.Show($"Organizacja '{name}' została utworzona.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show($"Nie udało się utworzyć organizacji '{name}'.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
         private void Powrot_Click(object sender, RoutedEventArgs e)
         {
             var adminWindow = new WindowAdmin();
