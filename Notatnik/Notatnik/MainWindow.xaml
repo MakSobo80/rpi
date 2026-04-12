@@ -144,8 +144,8 @@
             <MenuItem Grid.Column="0" Header="_Plik">
                 <MenuItem Header="Otwórz plik" x:Name="menuOpenFile" Click="OpenFile"/>
                 <MenuItem Header="Zapisz plik" x:Name="menuSaveFile" Click="SaveFile"/>
-                <MenuItem Header="Wyślij plik" x:Name="menuSendFile" Click="SendFile"/>
-                <MenuItem Header="Pobierz plik" x:Name="menuGetFile" Click="GetFile"/>
+                <MenuItem Header="Wyślij pliki" x:Name="menuSendFile" Click="SendFile"/>
+                <MenuItem Header="Pobierz pliki" x:Name="menuGetFile" Click="GetFile"/>
                 <Separator />
                 <MenuItem Header="Zamknij" x:Name="menuExit" Click="Window_Closed"/>
             </MenuItem>
