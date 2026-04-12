@@ -22,6 +22,8 @@ namespace Notatnik
         public WindowAdmin()
         {
             InitializeComponent();
+            if (Session.LoggedInUser == null)
+                BtnOrg.IsEnabled = false;
         }
 
         private void Notat_guzik(object sender, RoutedEventArgs e)
