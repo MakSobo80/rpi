@@ -144,6 +144,19 @@ namespace Notatnik
             return true;
         }
 
+        public static void DeleteSession()
+        {
+            string filePath = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Notatnik",
+                "session.json");
+
+            if (System.IO.File.Exists(filePath))
+                System.IO.File.Delete(filePath);
+
+            LoggedInUser = null;
+        }
+
         public static async Task<bool> LoadSession()
         {
             string filePath = System.IO.Path.Combine(

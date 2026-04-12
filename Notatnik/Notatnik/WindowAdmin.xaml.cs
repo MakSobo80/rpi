@@ -40,6 +40,14 @@ namespace Notatnik
             this.Close();
         }
 
+        private void Wyloguj_guzik(object sender, RoutedEventArgs e)
+        {
+            Session.DeleteSession();
+            string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule!.FileName;
+            System.Diagnostics.Process.Start(exePath);
+            Application.Current.Shutdown();
+        }
+
         private void Window_Closed(object sender, EventArgs e)
         {
             if (Application.Current.Windows.Count == 0)
