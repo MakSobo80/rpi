@@ -29,6 +29,11 @@ namespace Notatnik
                 notepad.WrittenText = TextContent.Text;
             };
             Loaded += (s, ev) => RefreshFileTree();
+            if (Session.LoggedInUser == null)
+            {
+                menuSendFile.IsEnabled = false;
+                menuGetFile.IsEnabled = false;
+            }
         }
 
         private void SaveCurrentFile()
