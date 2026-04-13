@@ -22,6 +22,8 @@ namespace Notatnik
         public WindowAdmin()
         {
             InitializeComponent();
+            if (Session.LoggedInUser == null)
+                BtnOrg.IsEnabled = false;
         }
 
         private void Notat_guzik(object sender, RoutedEventArgs e)
@@ -40,12 +42,18 @@ namespace Notatnik
             this.Close();
         }
 
-        private void Zatw_guzik(object sender, RoutedEventArgs e)
+        private void Wyloguj_guzik(object sender, RoutedEventArgs e)
         {
-            var orgwindow = new windoworg();
-            orgwindow.Show();
+            Session.DeleteSession();
+            string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule!.FileName;
+            System.Diagnostics.Process.Start(exePath);
+            Application.Current.Shutdown();
+        }
 
-            this.Close();
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (Application.Current.Windows.Count == 0)
+                Application.Current.Shutdown();
         }
     }
 }
