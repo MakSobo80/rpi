@@ -1,6 +1,6 @@
 # Notatnik
 
->An app for note-taking. Effortlessly create neat **Markdown** notes *by yourself*, or *collaborate and share* with coworkers, your manager or friends.
+>An app for note-taking. Effortlessly create *Markdown* notes *by yourself*, or *collaborate and share* with coworkers, your manager or friends.
 >Created with **XAML** and **C#**, using **WPF** and **LINQ** frameworks. 
 >Includes **Microsoft SQL Server Database**.
 
@@ -10,90 +10,73 @@
 
 1. Download the project, and try compiling it — it won't launch at first but *that's kind of okay*.
 2. Navigate to the `Notatnik/Notatnik/bin/Debug>net8.0-windows7.0` or another folder where the executive file is located.
-3. Once there, create a text file **appsettings.json**  with the following contents:
-`{`
-`"GitHub": {`
-`		"ClientId": "YOUR_GITHUB_CLIENT_ID",`
-`		"ClientSecret": "YOUR_GITHUB_CLIENT_SECRET"`
-`		}`
-`	}`
-4. You are all set! Launch the *Notatnik.exe* file.
+3. Once there, create a text file **appsettings.json**  with the following contents:<br>
+`{`<br>
+`"GitHub": {`<br>
+`		"ClientId": "YOUR_GITHUB_CLIENT_ID",`<br>
+`		"ClientSecret": "YOUR_GITHUB_CLIENT_SECRET"`<br>
+`		}`<br>
+`}`<br>
+5. You are all set! Launch the *Notatnik.exe* file.
 
-## How to use:
+
+## How to use *Notatnik*:
  
-
  
-### Switching to another file
+### Logging in
 
-All your files and folders are presented as a tree in the file explorer. You can switch from one to another by clicking a file in the tree.
+- Log in using your GitHub account, *Notatnik* will automatically redirect you to your browser to log in. 
+- You may also choose to use the application without logging in --- but beware, you won't be able to share created files trough the app or download files from other users.
 
-### Rename a file
 
-You can rename the current file by clicking the file name in the navigation bar or by clicking the **Rename** button in the file explorer.
+### Choosing your view
 
-### Delete a file
+- *Organisation* view --- This module will allow you to view your organisation, and manage it if you have the administrator permissions.
+- *Notepad* view --- This is 'the meat' of the application, allowing you to create, edit and synchronize markdown files.
 
-You can delete the current file by clicking the **Remove** button in the file explorer. The file will be moved into the **Trash** folder and automatically deleted after 7 days of inactivity.
 
-### Export a file
+### Working with a file
 
-You can export the current file by clicking **Export to disk** in the menu. You can choose to export the file as plain Markdown, as HTML using a Handlebars template or as a PDF.
+Now you are free to create a directory or a file and edit it's content. Use the upper field to write in your file. The real-time preview will show you the markdown final product.
 
 
 # Synchronization
 
-Synchronization is one of the biggest features of StackEdit. It enables you to synchronize any file in your workspace with other files stored in your **Google Drive**, your **Dropbox** and your **GitHub** accounts. This allows you to keep writing on other devices, collaborate with people you share the file with, integrate easily into your workflow... The synchronization mechanism takes place every minute in the background, downloading, merging, and uploading file modifications.
-
-There are two types of synchronization and they can complement each other:
-
-- The workspace synchronization will sync all your files, folders and settings automatically. This will allow you to fetch your workspace on any other device.
-	> To start syncing your workspace, just sign in with Google in the menu.
-
-- The file synchronization will keep one file of the workspace synced with one or multiple files in **Google Drive**, **Dropbox** or **GitHub**.
-	> Before starting to sync files, you must link an account in the **Synchronize** sub-menu.
-
-## Open a file
-
-You can open a file from **Google Drive**, **Dropbox** or **GitHub** by opening the **Synchronize** sub-menu and clicking **Open from**. Once opened in the workspace, any modification in the file will be automatically synced.
-
-# Publication
-
-Publishing in StackEdit makes it simple for you to publish online your files. Once you're happy with a file, you can publish it to different hosting platforms like **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **WordPress** and **Zendesk**. With [Handlebars templates](http://handlebarsjs.com/), you have full control over what you export.
-
-> Before starting to publish, you must link an account in the **Publish** sub-menu.
-
-## Publish a File
-
-You can publish your file by opening the **Publish** sub-menu and by clicking **Publish to**. For some locations, you can choose between the following formats:
-
-- Markdown: publish the Markdown text on a website that can interpret it (**GitHub** for instance),
-- HTML: publish the file converted to HTML via a Handlebars template (on a blog for example).
-
-## Update a publication
-
-After publishing, StackEdit keeps your file linked to that publication which makes it easy for you to re-publish it. Once you have modified your file and you want to update your publication, click on the **Publish now** button in the navigation bar.
-
-> **Note:** The **Publish now** button is disabled if your file has not been published yet.
-
-## Manage file publication
-
-Since one file can be published to multiple locations, you can list and manage publish locations by clicking **File publication** in the **Publish** sub-menu. This allows you to list and remove publication locations that are linked to your file.
 
 
-# Markdown extensions
+Synchronization is one of the main features of *Notatnik*. It enables you to synchronize any file in your workspace with other files stored in your organization's database. This allows you to keep writing on other devices, collaborate with people you share an organization with and be up to date with the newest updates. You can synchronize your work with these mechanisms:
 
-StackEdit extends the standard Markdown syntax by adding extra **Markdown extensions**, providing you with some nice features.
+- ### Sending the files
 
-> **ProTip:** You can disable any **Markdown extension** in the **File properties** dialog.
+- ### Downloading the files
+
+## Sending
+
+Using this option allows you to instantly send your changes in files and directories *(as well as any deletions and additions to the file tree)* to the database of your organization. These changes will be accesible to other users in the same org.
+
+## Downloading
+
+Using this option lets you synch your workspace with the  files and directories from your organisation's database.
+
+# Markdown:
 
 
-## SmartyPants
+Our goal is to make markdown easily accessible, hence *Notatnik* features a simplified way to create elements in markdown for the user, while staying true to its structure and keeping the data the same as for a standard **.md** file upon saving.
+So far following markdown functionalities have been implemented:
 
-SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
+- Styling text --- **bold** and *italic*
+- Headers 
 
-|                |ASCII                          |HTML                         |
-|----------------|-------------------------------|-----------------------------|
-|Single backticks|`'Isn't this fun?'`            |'Isn't this fun?'            |
-|Quotes          |`"Isn't this fun?"`            |"Isn't this fun?"            |
-|Dashes          |`-- is en-dash, --- is em-dash`|-- is en-dash, --- is em-dash|
+> We are working on implementing many more markdown elements, more on this in the next section.
 
+
+# Future development and fixes
+
+
+#### We are working to make this project better, so there are many improvements on the horizon, the ones on the forefront of our minds at the moment are:
+
+- **Fix:** `Deleting users from an org in the organisation view`
+- **Expanding on user hierarchy** --- adding roles such as head admins, etc.
+- **Ability to add organisations** from the application
+<br><br><br><br><br><br>
+##### Got questions? Suggestions? Contact the team at *notat-mail@snail.com*.
