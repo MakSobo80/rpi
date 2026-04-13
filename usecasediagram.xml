@@ -158,7 +158,7 @@
         <mxCell id="MANyYxQfNnzQjluAIuRW-96" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Zarządzanie organizacją" vertex="1">
           <mxGeometry height="70" width="140" x="630" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="MANyYxQfNnzQjluAIuRW-99" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Otworzenie menu menedżera" vertex="1">
+        <mxCell id="MANyYxQfNnzQjluAIuRW-99" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Otworzenie menu organizacji" vertex="1">
           <mxGeometry height="70" width="170" x="230" y="440" as="geometry" />
         </mxCell>
         <mxCell id="MANyYxQfNnzQjluAIuRW-100" edge="1" parent="1" source="1MYNXt1WrTZDMCgQqdPa-56" style="endArrow=classic;html=1;rounded=0;dashed=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.739;exitY=0.904;exitDx=0;exitDy=0;exitPerimeter=0;" target="MANyYxQfNnzQjluAIuRW-99" value="">
