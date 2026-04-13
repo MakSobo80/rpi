@@ -1,9 +1,11 @@
 # Notatnik
+<br>
 
->An app for note-taking. Effortlessly create *Markdown* notes *by yourself*, or *collaborate and share* with coworkers, your manager or friends.
->Created with **XAML** and **C#**, using **WPF** and **LINQ** frameworks. 
->Includes **Microsoft SQL Server Database**.
+> An app for note-taking. Effortlessly create *Markdown* notes *by yourself*, or *collaborate and share* with coworkers, your manager or friends.
+> Created with **XAML** and **C#**, using **WPF** and **LINQ** frameworks. 
+> Includes **Microsoft SQL Server Database**.
 
+<br>
 
 ## Installation
 
@@ -65,7 +67,9 @@ Our goal is to make markdown easily accessible, hence *Notatnik* features a simp
 So far following markdown functionalities have been implemented:
 
 - Styling text --- **bold** and *italic*
-- Headers 
+- Headers
+- Adding a `<hr>` line as a divider
+- Paragraphs
 
 > We are working on implementing many more markdown elements, more on this in the next section.
 
@@ -78,5 +82,5 @@ So far following markdown functionalities have been implemented:
 - **Fix:** `Deleting users from an org in the organisation view`
 - **Expanding on user hierarchy** --- adding roles such as head admins, etc.
 - **Ability to add organisations** from the application
-<br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
 ##### Got questions? Suggestions? Contact the team at *notat-mail@snail.com*.
