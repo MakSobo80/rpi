@@ -6,22 +6,48 @@
         xmlns:local="clr-namespace:Notatnik"
         mc:Ignorable="d"
         Background="DarkGray"
-        Title="WindowConfirm" Height="450" Width="800">
+        Title="Zatwierdzanie plików" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Background="#FFC5C3C3" />
-        <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Background="#FFC5C3C3" />
-        <Button Grid.Column="0" Grid.Row="0" Content="Zatwierdz" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,20"  VerticalAlignment="bottom"  Width="124" Height="50" Click="Zatwierdz"/>
-        <Button Grid.Column="1" Grid.Row="0" Content="Odrzuc" Foreground="black" Background="#FFE5E5E5" BorderBrush="DarkGray" HorizontalAlignment="center" Margin="0,0,0,20"  VerticalAlignment="bottom"  Width="124" Height="50" Click="Odrzuc"/>
 
+        <!-- Header buttons -->
+        <Button Grid.Column="0" Grid.Row="0" Content="Zatwierdz (Pobierz)" Foreground="black"
+                Background="#FFE5E5E5" BorderBrush="DarkGray"
+                HorizontalAlignment="Center" Margin="0,10,0,10"
+                VerticalAlignment="Center" Width="160" Height="40" Click="Zatwierdz"/>
+        <Button Grid.Column="1" Grid.Row="0" Content="Odrzuc (Usuń)" Foreground="black"
+                Background="#FFE5E5E5" BorderBrush="DarkGray"
+                HorizontalAlignment="Center" Margin="0,10,0,10"
+                VerticalAlignment="Center" Width="160" Height="40" Click="Odrzuc"/>
 
+        <!-- File list -->
+        <StackPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" Margin="10,0,10,10" Background="#FFC5C3C3">
+            <Label Content="Pliki w organizacji:" FontWeight="Bold" Margin="4,4,4,0"/>
+            <ListBox x:Name="listFiles" Margin="4" Height="300"
+                     SelectionChanged="ListFiles_SelectionChanged"/>
+        </StackPanel>
 
+        <!-- File details -->
+        <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" Margin="10,0,10,10" Background="#FFC5C3C3">
+            <Label Content="Szczegóły pliku:" FontWeight="Bold" Margin="4,4,4,0"/>
+            <Label x:Name="labelFileName" Content="Nazwa: —" Margin="4,4,4,0"/>
+            <Label x:Name="labelFileAuthor" Content="Autor: —" Margin="4,2,4,0"/>
+            <Label x:Name="labelFileSize" Content="Rozmiar: —" Margin="4,2,4,0"/>
+        </StackPanel>
+
+        <!-- Back button -->
+        <Button Grid.Column="1" Grid.Row="2" Content="Powrót" Width="100" Height="36"
+                HorizontalAlignment="Right" Margin="10,0,10,10"
+                Background="#FFE5E5E5" BorderBrush="DarkGray" Click="Powrot_Click"/>
     </Grid>
 </Window>
